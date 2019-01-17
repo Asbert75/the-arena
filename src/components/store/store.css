@@ -1,0 +1,201 @@
+#store {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    width: 800px;
+    justify-content: space-between;
+}
+
+#store .buyBtn, #store .upgradeBtn {
+    background: none;
+    border: none;
+    outline: none;
+    width: 128px;
+    height: 39px;
+    opacity: 0.8;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+#store .buyBtn {
+    background-image: url('../../images/purchase.png');
+}
+
+#store .upgradeBtn {
+    background-image: url('../../images/upgrade.png');
+}
+
+#store .buyBtn:hover, #store .upgradeBtn:hover {
+    opacity: 1;
+    cursor: pointer;
+}
+
+#store .buyBtn:active, #store .upgradeBtn:active {
+    opacity: 0.6;
+}
+
+#store .items, #store .spells {
+    width: 575px;
+    margin-left: 25px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+#store .itemContainer {
+    width: 250px;
+    height: 150px;
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#store .itemContainer .description {
+    font-size: 13px;
+}
+
+#store .itemContainer .header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#store .itemContainer .header h4 {
+    width: 190px;
+    margin-left: 6px;
+}
+
+#store .itemContainer .buyItem {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#store .itemContainer .itemInfo p {
+    font-size: 13px;
+}
+
+#store .itemContainer p.lowLevel {
+    color: rgb(187, 58, 58);;
+}
+
+#store .buyItem.disabled button {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+#store .itemContainer.owned, #store .spellContainer.owned {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+#store .sidebar {
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#store .sidebar h3 {
+    width: 200px;
+}
+
+#store .sidebar > div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 200px;
+    margin-bottom: 20px;
+    margin-top: 5px;
+}
+
+
+#store .sidebar > div > div > p {
+    font-family: "Cinzel Decorative";
+}
+
+#store .equipmentBtn, #store .spellsBtn {
+    margin-top: 10px;
+    background: none;
+    border: none;
+    outline: none;
+    width: 128px;
+    height: 39px;
+    opacity: 0.6;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+#store .spellsBtn {
+    background-image: url('../../images/spells.png');
+}
+
+#store .equipmentBtn {
+    background-image: url('../../images/equipment.png');
+}
+
+#store .equipmentBtn:hover, #store .spellsBtn:hover {
+    opacity: 1;
+    cursor: pointer;
+}
+
+#store .equipmentBtn:active, #store .spellsBtn:active {
+    opacity: 0.6;
+}
+
+#store .equipmentBtn.active, #store .spellsBtn.active {
+    opacity: 0.8;
+}
+
+#store .spellframe {
+    pointer-events: none;
+}
+
+#store .spellContainer {
+    width: 250px;
+    height: 150px;
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#store .spellContainer .description {
+    font-size: 13px;
+}
+
+#store .spellContainer .header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#store .spellContainer .header h4 {
+    width: 190px;
+    margin-left: 6px;
+}
+
+#store .spellContainer .buyItem {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#store .spellContainer .itemInfo p {
+    font-size: 13px;
+}
+
+#store .lowCoins {
+    color: rgb(187, 58, 58);;
+}
+
+#store .sidebar .coin {
+    margin-left: 0;
+}

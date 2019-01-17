@@ -1,0 +1,268 @@
+body {
+  margin: 0;
+  padding: 0;
+  padding-left: 10em;
+  padding-right: 10em;
+  font-family: "PT Serif", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-image: url('./images/background.png');
+  overflow-y: scroll;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: "Cinzel Decorative";
+  color: rgb(255, 178, 115);
+  text-shadow: 1px 1px 2px #000, 0 0 1em #000, 0 0 0.2em #000;
+}
+
+p {
+  font-family: "PT Serif";
+  color: rgb(223, 223, 223);
+  text-shadow: 1px 1px 2px #000, 0 0 1em #000, 0 0 0.2em #000;
+}
+
+.spell {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+}
+
+.spellDescription > div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.spellDescription {
+    border-radius: 3px;
+    position: absolute;
+    left: 60px;
+    z-index: 1100;
+    background: rgb(19, 19, 19);
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgb(255, 178, 115);
+    padding: 10px 15px;
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    display: none;
+    font-size: 14px;
+    user-select: none;
+}
+
+.spellDescription .spellName {
+    color: rgb(255, 178, 115);
+}
+
+.spellDescription .resourceCost {
+    font-size: 12px;
+}
+
+.spellDescription > p {
+    font-size: 12px;
+}
+
+.spellframe {
+    margin-top: 5px;
+    position: relative;
+    width: 54px;
+    height: 54px;
+    user-select: none;
+}
+
+.spellframe.disabled {
+    opacity: 0.5;
+}
+
+.spellframe .frame_hover, .spellframe .frame_clicked {
+    display: none;
+}
+
+.spellframe .frame, .spellframe .frame_hover, .spellframe .frame_clicked {
+    position: absolute;
+    z-index: 1000;
+}
+
+.spellframe:hover {
+    cursor: pointer;
+}
+
+.spellframe:hover > .frame {
+    display: none;
+}
+
+.spellframe:hover + .spellDescription {
+    display: initial;
+}
+
+.spellframe:hover > .frame_hover {
+    display: initial;
+}
+
+.spellframe.clickable:active > .frame_clicked, .spellframe.clickable.clicked > .frame_clicked {
+    display: initial;
+}
+
+.spellframe.clickable:active > .bind, .spellframe.clickable.clicked > .bind {
+    color: rgb(255, 178, 115);
+}
+
+.spellframe .frame_icon {
+    position: absolute;
+    top: 3px;
+    left: 4px;
+    width: 42px;
+    height: 42px;
+    z-index: 999;
+    border-radius: 100%;
+}
+
+.classframe {
+    position: relative;
+    width: 62px;
+    height: 62px;
+    user-select: none;
+}
+
+.classframe .frame {
+    position: absolute;
+    z-index: 1000;
+}
+
+.classframe.hoverable:hover {
+    cursor: pointer;
+}
+
+.classframe .frame_active {
+    display: none;
+}
+
+.classframe.selected > .frame_active {
+    display: initial;
+}
+
+.classframe.selected > .frame {
+    display: none;
+}
+
+.classframe .frame_icon {
+    position: absolute;
+    top: 5px;
+    left: 6px;
+    width: 46px;
+    height: 46px;
+    z-index: 999;
+    border-radius: 100%;
+}
+
+.resourceframe {
+    position: relative;
+    width: 116px;
+    height: 117px;
+    user-select: none;
+}
+
+.resourceframe .frame {
+    position: absolute;
+    z-index: 998;
+}
+
+.resourceframe .frame_shadow {
+    position: absolute;
+    z-index: 1000;
+}
+
+.resourceframe .frame_orb {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 116px;
+    height: 117px;
+    z-index: 999;
+    border-radius: 100%;
+}
+
+.resourcebar {
+    position: relative;
+    width: 500px;
+    height: 14px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.resourcebar .frame {
+    position: absolute;
+    z-index: 999;
+}
+
+.resourcebar .frame_filler_experience, .resourcebar .frame_filler_health, .resourcebar .frame_filler_mana, .resourcebar .frame_filler_energy {
+    position: absolute;
+    z-index: 1000;
+    width: 494px;
+    height: 8px;
+    top: 3px;
+    left: 3px;
+    transition: all 1s linear;
+}
+
+.resourcebar .frame_filler_experience {
+    background-image: url("/images/resourceframe/bar_experience.png");
+}
+
+.resourcebar .frame_filler_health {
+    background-image: url("/images/resourceframe/bar_health.png");
+}
+
+.resourcebar .frame_filler_mana {
+    background-image: url("/images/resourceframe/bar_mana.png");
+}
+
+.resourcebar .frame_filler_energy {
+    background-image: url("/images/resourceframe/bar_energy.png");
+}
+
+.enemyUnitFrame {
+    position: relative;
+    width: 62px;
+    height: 62px;
+    user-select: none;
+}
+
+.enemyUnitFrame .frame {
+    position: absolute;
+    z-index: 1000;
+}
+
+.enemyUnitFrame .frame_icon {
+    position: absolute;
+    top: 5px;
+    left: 6px;
+    width: 46px;
+    height: 46px;
+    z-index: 999;
+    border-radius: 100%;
+}
+
+.coinContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.coin {
+    width: 16px;
+    height: 16px;
+    margin-left: 10px;
+    margin-right: 3px;
+}

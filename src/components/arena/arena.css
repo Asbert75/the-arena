@@ -1,0 +1,230 @@
+#arena .resourceframe.left {
+    margin-right: 30px;
+}
+
+#arena .resourceframe.right {
+    margin-left: 30px;
+}
+
+#arena .resourceframe {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#arena .resourceframe .value {
+    z-index: 1005;
+    margin-top: 44px;
+    margin-left: -8px;
+    text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+#arena .spellframe .bind {
+    position: absolute;
+    top: -25px;
+    left: 20px;
+}
+
+#arena #spells {
+    margin-top: 20px;
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#arena {
+    display: flex;
+    flex-direction: column;
+}
+
+#arena .enemyFrame {
+    margin-bottom: 2em;
+}
+
+#arena .statusFrame {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 508px;
+    height: 200px;
+}
+
+#arena .playerFrame {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    margin-top: 2em;
+}
+
+#arena .playerFrame {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#arena .resourcebar {
+    margin-top: 20px;
+    margin-left: 2px;
+}
+
+#arena .playerFrame .resourcebar {
+    margin-top: 5px;
+}
+
+#arena .resourcebar .level {
+    position: absolute;
+    top: -22px;
+    left: 0;
+    font-size: 12px;
+}
+
+#arena .resourcebar .playerExp {
+    position: absolute;
+    bottom: -17px;
+    left: 2px;
+    z-index: 10000;
+    font-size: 11px;
+    width: 498px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#arena .resourcebar .health {
+    position: absolute;
+    top: -22px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+}
+
+#arena .enemyName {
+    color: white;
+    margin-left: 10px;
+}
+
+#arena .enemyProfile {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#arena .enemy {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#arena .startBtn {
+    background-image: url('../../images/get_started.png');
+}
+
+#arena .continueBtn {
+    background-image: url('../../images/next_level.png');
+}
+
+#arena .restartBtn {
+    background-image: url('../../images/try_again.png');
+}
+
+#arena .continueBtn, #arena .restartBtn {
+    margin-top: 1em;
+}
+
+#arena button {
+    background: none;
+    border: none;
+    outline: none;
+    width: 128px;
+    height: 39px;
+    opacity: 0.8;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+#arena button:hover {
+    opacity: 1;
+    cursor: pointer;
+}
+
+#arena button:active {
+    opacity: 0.6;
+}
+
+#arena p.lowMana {
+    color: rgb(187, 58, 58);
+}
+
+#arena .container {
+   position: absolute;
+   top: 92px;
+   z-index: 0;
+}
+
+#arena .resourcebar .playerInfo {
+    position: absolute;
+    top: -45px;
+    left: 0;
+}
+
+#arena .playerInfo h5 {
+    font-size: 14px;
+}
+
+#arena .playerInfo p {
+    font-size: 12px;
+}
+
+#arena .playerInfo span {
+    color: #ffb273;
+}
+
+#arena .playerInfo > div {
+    width: 498px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#arena .levelIndicatorFrame {
+    position: relative;
+    width: 195px;
+    height: 14px;
+    left: -6px;
+}
+
+#arena .levelIndicatorFrame .container {
+    position: absolute;
+    width: 195px;
+    height: 14px;
+    top: 0;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+#arena .indicator {
+    position: absolute;
+    width: 28px;
+    height: 8px;
+    top: 3px;
+    left: 3px;
+}
+
+#arena .indicator.hidden {
+    display: none;
+}
+
+#arena .loot {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#arena .expGain {
+    color: #823797;
+}
+
+#arena .coinGain {
+    color: #ffc684;
+}

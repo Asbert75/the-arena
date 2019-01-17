@@ -1,0 +1,67 @@
+#app {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#app .introduction {
+    width: 600px;
+    display: flex;
+    flex-direction: column;
+}
+
+#app .introduction > div {
+    margin-top: 2em;
+    display: flex;
+    justify-content: center;
+}
+
+#app .introduction h2 {
+    margin-bottom: 10px;
+}
+
+#app .introduction span {
+    color: rgb(255, 86, 86);
+    font-size: 14px;
+}
+
+#app .introduction button.secondary {
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.4);
+    margin-left: 10px;
+    border: none;
+    outline: none;
+    padding: 10px 20px;
+    font-family: "Roboto";
+    text-transform: uppercase;
+    font-size: 14px;
+    box-shadow: none;
+    background: rgba(0, 0, 0, 0);
+    color: rgba(255, 178, 115, 0.5);
+    font-weight: normal;
+}
+
+#app .introduction button.secondary:hover {
+    background: none;
+    color: rgb(255, 198, 152);
+    cursor: pointer;
+}
+
+#app .createBtn {
+    background: none;
+    border: none;
+    outline: none;
+    width: 128px;
+    height: 39px;
+    background-image: url('./images/get_started.png');
+    opacity: 0.8;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+#app .createBtn:hover {
+    opacity: 1;
+    cursor: pointer;
+}
+
+#app .createBtn:active {
+    opacity: 0.6;
+}

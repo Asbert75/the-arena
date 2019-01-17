@@ -1,0 +1,133 @@
+#character {
+    padding-bottom: 5em;
+    padding-top: 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#character .spells {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 800px;
+}
+
+#character .spellsHeader, #character .equipmentHeader {
+    margin-top: 2em;
+}
+
+#character .equipment > p {
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+#character .spells > div {
+    flex: 0 0 150px;
+}
+
+#character .resourcebar .playerInfo {
+    position: absolute;
+    top: -45px;
+    left: 0;
+}
+
+#character .playerInfo h5 {
+    font-size: 14px;
+}
+
+#character .playerInfo p {
+    font-size: 12px;
+}
+
+#character .playerInfo span {
+    color: #ffb273;
+}
+
+#character .experience {
+    position: absolute;
+    top: -20px;
+    right: 0;
+    font-size: 12px;
+}
+
+#character .spellRanks {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: -5px;
+}
+
+#character .spellRanks .learned {
+    width: 10px;
+    height: 10px;
+    border-radius: 100%;
+    background: #ffb273;
+    margin-left: 5px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+#character .spellRanks .notLearned {
+    width: 10px;
+    height: 10px;
+    border-radius: 100%;
+    background: black;
+    margin-left: 5px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+#character .class {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+#character .class h3 {
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 350px;
+}
+
+#character .class h3:first-of-type {
+    text-align: right;
+}
+
+#character h4.className {
+    width: 100%;
+    text-align: center;
+    padding-bottom: 20px;
+    margin-top: 10px;
+    margin-bottom: 1em;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.25);
+}
+
+#character .equipment {
+    width: 600px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+#character .item {
+    flex: 0 0 300px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    pointer-events: none;
+}
+
+#character .item .description {
+    font-size: 13px;
+}
+
+#character .item .header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#character .item .header h4 {
+    width: 190px;
+    margin-left: 6px;
+}
