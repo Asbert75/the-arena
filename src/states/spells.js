@@ -7,8 +7,8 @@ const spells = {
             _description: "Attack your enemy for [d] damage.",
             get description() {
                 let description = this._description;
-                description = description.replace(/\[d\]/g, this.damage);
-                description = description.replace(/\[h\]/g, this.healing);
+                description = description.replace(/\[d\]/g, `${Math.floor(this.damage*0.9)}-${Math.floor(this.damage*1.1)}`);
+                description = description.replace(/\[h\]/g, `${Math.floor(this.healing*0.9)}-${Math.floor(this.healing*1.1)}`);
                 return description;
             },
             get damage() {
@@ -21,7 +21,7 @@ const spells = {
                 return this._rank;
             },
             set rank(n) {
-                this._rank += n;
+                this._rank = n;
             },
             resourceCost: 0,
             baseDamage: 15,
@@ -35,8 +35,8 @@ const spells = {
             _description: "Cast a heal on yourself, restoring [h] health points.",
             get description() {
                 let description = this._description;
-                description = description.replace(/\[d\]/g, this.damage);
-                description = description.replace(/\[h\]/g, this.healing);
+                description = description.replace(/\[d\]/g, `${Math.floor(this.damage*0.9)}-${Math.floor(this.damage*1.1)}`);
+                description = description.replace(/\[h\]/g, `${Math.floor(this.healing*0.9)}-${Math.floor(this.healing*1.1)}`);
                 return description;
             },
             get damage() {
@@ -49,7 +49,7 @@ const spells = {
                 return this._rank;
             },
             set rank(n) {
-                this._rank += n;
+                this._rank = n;
             },
             resourceCost: 15,
             baseDamage: 0,
@@ -63,8 +63,8 @@ const spells = {
             _description: "Launches a charged arrow at your enemy, dealing [d] damage.",
             get description() {
                 let description = this._description;
-                description = description.replace(/\[d\]/g, this.damage);
-                description = description.replace(/\[h\]/g, this.healing);
+                description = description.replace(/\[d\]/g, `${Math.floor(this.damage*0.9)}-${Math.floor(this.damage*1.1)}`);
+                description = description.replace(/\[h\]/g, `${Math.floor(this.healing*0.9)}-${Math.floor(this.healing*1.1)}`);
                 return description;
             },
             get damage() {
@@ -77,7 +77,7 @@ const spells = {
                 return this._rank;
             },
             set rank(n) {
-                this._rank += n;
+                this._rank = n;
             },
             resourceCost: 30,
             baseDamage: 35,
@@ -91,8 +91,8 @@ const spells = {
             _description: "An extremely strong arrow pierces your enemy, instantly dealing [d] damage.",
             get description() {
                 let description = this._description;
-                description = description.replace(/\[d\]/g, this.damage);
-                description = description.replace(/\[h\]/g, this.healing);
+                description = description.replace(/\[d\]/g, `${Math.floor(this.damage*0.9)}-${Math.floor(this.damage*1.1)}`);
+                description = description.replace(/\[h\]/g, `${Math.floor(this.healing*0.9)}-${Math.floor(this.healing*1.1)}`);
                 return description;
             },
             get damage() {
@@ -105,7 +105,7 @@ const spells = {
                 return this._rank;
             },
             set rank(n) {
-                this._rank += n;
+                this._rank = n;
             },
             resourceCost: 10,
             baseDamage: 25,
@@ -119,8 +119,8 @@ const spells = {
             _description: "A quick attack that deals [d] damage.",
             get description() {
                 let description = this._description;
-                description = description.replace(/\[d\]/g, this.damage);
-                description = description.replace(/\[h\]/g, this.healing);
+                description = description.replace(/\[d\]/g, `${Math.floor(this.damage*0.9)}-${Math.floor(this.damage*1.1)}`);
+                description = description.replace(/\[h\]/g, `${Math.floor(this.healing*0.9)}-${Math.floor(this.healing*1.1)}`);
                 return description;
             },
             get damage() {
@@ -133,7 +133,7 @@ const spells = {
                 return this._rank;
             },
             set rank(n) {
-                this._rank += n;
+                this._rank = n;
             },
             resourceCost: 10,
             baseDamage: 20,
@@ -147,8 +147,8 @@ const spells = {
             _description: "A brutal slam that deals [d] damage.",
             get description() {
                 let description = this._description;
-                description = description.replace(/\[d\]/g, this.damage);
-                description = description.replace(/\[h\]/g, this.healing);
+                description = description.replace(/\[d\]/g, `${Math.floor(this.damage*0.9)}-${Math.floor(this.damage*1.1)}`);
+                description = description.replace(/\[h\]/g, `${Math.floor(this.healing*0.9)}-${Math.floor(this.healing*1.1)}`);
                 return description;
             },
             get damage() {
@@ -161,7 +161,7 @@ const spells = {
                 return this._rank;
             },
             set rank(n) {
-                this._rank += n;
+                this._rank = n;
             },
             resourceCost: 35,
             baseDamage: 30,
@@ -175,8 +175,8 @@ const spells = {
             _description: "Stab your target from behind, dealing [d] damage.",
             get description() {
                 let description = this._description;
-                description = description.replace(/\[d\]/g, this.damage);
-                description = description.replace(/\[h\]/g, this.healing);
+                description = description.replace(/\[d\]/g, `${Math.floor(this.damage*0.9)}-${Math.floor(this.damage*1.1)}`);
+                description = description.replace(/\[h\]/g, `${Math.floor(this.healing*0.9)}-${Math.floor(this.healing*1.1)}`);
                 return description;
             },
             get damage() {
@@ -189,7 +189,7 @@ const spells = {
                 return this._rank;
             },
             set rank(n) {
-                this._rank += n;
+                this._rank = n;
             },
             resourceCost: 15,
             baseDamage: 25,
@@ -203,8 +203,8 @@ const spells = {
             _description: "Throw a vial of poison at your target, dealing [d] damage.",
             get description() {
                 let description = this._description;
-                description = description.replace(/\[d\]/g, this.damage);
-                description = description.replace(/\[h\]/g, this.healing);
+                description = description.replace(/\[d\]/g, `${Math.floor(this.damage*0.9)}-${Math.floor(this.damage*1.1)}`);
+                description = description.replace(/\[h\]/g, `${Math.floor(this.healing*0.9)}-${Math.floor(this.healing*1.1)}`);
                 return description;
             },
             get damage() {
@@ -217,7 +217,7 @@ const spells = {
                 return this._rank;
             },
             set rank(n) {
-                this._rank += n;
+                this._rank = n;
             },
             resourceCost: 25,
             baseDamage: 30,
@@ -231,8 +231,8 @@ const spells = {
             _description: "Set your target ablaze, dealing [d] damage.",
             get description() {
                 let description = this._description;
-                description = description.replace(/\[d\]/g, this.damage);
-                description = description.replace(/\[h\]/g, this.healing);
+                description = description.replace(/\[d\]/g, `${Math.floor(this.damage*0.9)}-${Math.floor(this.damage*1.1)}`);
+                description = description.replace(/\[h\]/g, `${Math.floor(this.healing*0.9)}-${Math.floor(this.healing*1.1)}`);
                 return description;
             },
             get damage() {
@@ -245,7 +245,7 @@ const spells = {
                 return this._rank;
             },
             set rank(n) {
-                this._rank += n;
+                this._rank = n;
             },
             resourceCost: 20,
             baseDamage: 30,
@@ -259,8 +259,8 @@ const spells = {
             _description: "Fuse your energy with the enemy, dealing [d] damage, and restoring [h] health points to you.",
             get description() {
                 let description = this._description;
-                description = description.replace(/\[d\]/g, this.damage);
-                description = description.replace(/\[h\]/g, this.healing);
+                description = description.replace(/\[d\]/g, `${Math.floor(this.damage*0.9)}-${Math.floor(this.damage*1.1)}`);
+                description = description.replace(/\[h\]/g, `${Math.floor(this.healing*0.9)}-${Math.floor(this.healing*1.1)}`);
                 return description;
             },
             get damage() {
@@ -273,7 +273,7 @@ const spells = {
                 return this._rank;
             },
             set rank(n) {
-                this._rank += n;
+                this._rank = n;
             },
             resourceCost: 60,
             baseDamage: 20,
@@ -287,8 +287,8 @@ const spells = {
             _description: "Drink a health potion, restoring [h] health points.",
             get description() {
                 let description = this._description;
-                description = description.replace(/\[d\]/g, this.damage);
-                description = description.replace(/\[h\]/g, this.healing);
+                description = description.replace(/\[d\]/g, `${Math.floor(this.damage*0.9)}-${Math.floor(this.damage*1.1)}`);
+                description = description.replace(/\[h\]/g, `${Math.floor(this.healing*0.9)}-${Math.floor(this.healing*1.1)}`);
                 return description;
             },
             get damage() {
@@ -301,7 +301,7 @@ const spells = {
                 return this._rank;
             },
             set rank(n) {
-                this._rank += n;
+                this._rank = n;
             },
             resourceCost: 0,
             baseDamage: 0,

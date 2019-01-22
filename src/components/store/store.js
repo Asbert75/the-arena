@@ -64,15 +64,22 @@ class Store extends Component {
         </div>}
         { this.state.view === "spells" && <div className="spells">
             {this.props.character.spells.map((spell, index) => {
-                let temp;
-                if(spell.rank < 3) {
-                    spell.rank = 1;
-                    temp = {...spell};
-                    spell.rank = -1;
+                let temp = {
+                    id: spell.id,
+                    rank: spell.rank,
+                    name: spell.name,
+                    icon: spell.icon
+                };
+
+                if(spell.rank === 3) {
+                    temp.rank = 3;
                 }
                 else {
-                    temp = {...spell};
+                    temp.rank = (spell.rank + 1);
                 }
+
+                temp.description = spell.description;
+
                 return (<div key={temp.id} className={spell.rank === 3 ? "spellContainer owned" : "spellContainer"}>
                             <div>
                                 <div className="header">
@@ -93,7 +100,7 @@ class Store extends Component {
                                 </div>
                                 <button className="upgradeBtn" onClick={() => {
                                     if(spell.rank < 3) {
-                                        this.props.dispatch(upgradeSpell(index, (100*temp.rank)));
+                                        this.props.dispatch(upgradeSpell(index, (100*temp.rank), temp.rank));
                                     }
                                 }}></button>
                             </div>

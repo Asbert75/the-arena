@@ -99,7 +99,7 @@ const equipment = {
             healingModifier: 1,
             cost: 100,
             requiredLevel: 2,
-            availableClasses: [0, 1, 2]
+            availableClasses: [0, 2]
         }, {
             id: 5,
             name: "Chainmail of Endurance",
@@ -179,7 +179,7 @@ const equipment = {
             healingModifier: 1,
             cost: 700,
             requiredLevel: 10,
-            availableClasses: [1, 2, 3, 4]
+            availableClasses: [0, 1, 2, 3]
         }, {
             id: 9,
             name: "Tribal Pendant",
@@ -199,7 +199,7 @@ const equipment = {
             healingModifier: 1.6,
             cost: 700,
             requiredLevel: 10,
-            availableClasses: [1, 2, 3, 4]
+            availableClasses: [0, 1, 2, 3]
         }
     ]
 }

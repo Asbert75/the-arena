@@ -45,11 +45,12 @@ let giveLoot = (experience, coins) => {
     }
 }
 
-let upgradeSpell = (spellIndex, cost) => {
+let upgradeSpell = (spellIndex, cost, newRank) => {
     return {
         type: "UPGRADE_SPELL",
         spellIndex,
-        cost
+        cost,
+        newRank
     }
 }
 
@@ -57,6 +58,14 @@ let purchaseItem = (item) => {
     return {
         type: "PURCHASE_ITEM",
         item
+    }
+}
+
+let loadCharacter = (character, cached) => {
+    return {
+        type: "LOAD_CHARACTER",
+        character,
+        cached
     }
 }
 
@@ -69,5 +78,6 @@ export {
     setClass,
     giveLoot,
     upgradeSpell,
-    purchaseItem
+    purchaseItem,
+    loadCharacter
 };

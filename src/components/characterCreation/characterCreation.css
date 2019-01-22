@@ -1,134 +1,33 @@
-#characterCreation {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-#characterCreation .classes {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-}
-
-#characterCreation .classes > div {
-    margin-left: 10px;
-    margin-right: 10px;
-}
-
-#characterCreation .classesHeader {
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-#characterCreation .classList {
+#characterCreation .select {
+    width: 800px;
+    height: 400px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+#characterCreation .select div {
+    width: 350px;
+    height: 100%;
+    display: flex;
+    align-items: center;
     justify-content: center;
-}
-
-#characterCreation .class {
-    width: 500px;
-    padding: 20px;
-    margin: 20px;
-    display: none;
-}
-
-#characterCreation .class.selected {
-    display: initial;
-}
-
-#characterCreation .class .header {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-
-#characterCreation .class .header > div {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-
-#characterCreation .class .description {
-    padding-top: 10px;
-    padding-bottom: 10px;
-    height: 70px;
-}
-
-#characterCreation .class .header h3 {
-    margin-left: 10px;
-}
-
-#characterCreation h4 {
-    margin-top: 10px;
-}
-
-#characterCreation .spells {
-    display: flex;
-    flex-direction: row;
-}
-
-#characterCreation .selectBtn {
-    background: none;
-    border: none;
-    outline: none;
-    width: 128px;
-    height: 39px;
-    background-image: url('../../images/select_class.png');
-    opacity: 0.8;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
-    transition: all 0.2s linear;
-}
-
-#characterCreation .selectBtn:hover {
-    transition: all 0.2s linear;
-    opacity: 1;
     cursor: pointer;
 }
 
-#characterCreation .selectBtn:active {
-    opacity: 0.6;
+#characterCreation .select div.or {
+    width: 100px;
+    cursor: initial;
 }
 
-#characterCreation .selectBtnContainer {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
+#characterCreation .select div h3 {
+    transition: all 0.2s linear;
+    letter-spacing: 2px;
 }
 
-#characterCreation .selectBtn:disabled {
-    pointer-events: none;
-    opacity: 0.4;
-}
-
-#characterCreation input {
-    margin-top: 15px;
-    margin-bottom: 30px;
-    padding: 5px 10px;
-    background: none;
-    border: none;
-    outline: none;
-    border-bottom: 2px solid rgba(255, 178, 115, 0.5);
-
-    font-size: 15px;
-    color: rgb(223, 223, 223);
-    text-shadow: 1px 1px 2px #000, 0 0 1em #000, 0 0 0.2em #000;
-    font-family: "Cinzel Decorative";
-}
-
-#characterCreation input.error {
-    border-bottom: 2px solid rgba(255, 115, 115, 0.5);
-}
-
-#characterCreation p.nameError {
-    font-size: 11px;
-    color: rgba(255, 115, 115, 0.5);
-    position: absolute;
-    top: 50px;
-}
-
-#characterCreation .characterName {
-    position: relative;
-    margin-bottom: 20px;
+#characterCreation .select div:hover > h3 {
+    color: rgb(255, 202, 152);
+    transition: all 0.2s linear;
+    text-shadow: 0px 10px 10px black;
 }

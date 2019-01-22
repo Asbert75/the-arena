@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import Player from "./player";
-import Enemy from "./enemy";
+import Player from "../../classes/player";
+import Enemy from "../../classes/enemy";
 
 import "./arena.css";
 import { giveLoot } from "../../actions/actions";
@@ -26,15 +26,12 @@ class Arena extends Component {
         };
     }
 
-    componentDidMount() {
-        this.addSpellEventListeners();
-    }
-
     startArena() {
         let enemy = new Enemy(this.props.enemies[this.state.arenaLevel-1], this.props.gameSettings.baseHealthPerLevel);
         let player = new Player(this.props.character, this.props.gameSettings.baseHealthPerLevel, 
             this.props.gameSettings.baseResourcesPerLevel, this.props.gameSettings.requiredExperience[this.props.character.level-1]);
         this.setState({ enemy, player}, () => {
+            this.addSpellEventListeners();
             this.setState({ status: "INPROGRESS" });
         });
     }
@@ -53,11 +50,13 @@ class Arena extends Component {
     }
 
     distributeLoot() {
-        let experience = Math.floor(this.state.enemy.getLevel * 50 * ((Math.floor(Math.random() * 50) + 75) / 100));
-        let coins = this.state.enemy.getLevel * 10;
-        this.setState({ winnings: { experience, coins }, status: "WINNER" }, () => {
-            this.props.dispatch(giveLoot(experience, coins));
-        });
+        if(this.state.loot.experience === 0 && this.state.loot.coins === 0) { 
+            let experience = Math.floor(this.state.enemy.getLevel * 50 * ((Math.floor(Math.random() * 50) + 75) / 100));
+            let coins = Math.floor(this.state.enemy.getLevel * 15 * ((Math.floor(Math.random() * 50) + 75) / 100));
+            this.setState({ loot: { experience, coins }, status: "WINNER" }, () => {
+                this.props.dispatch(giveLoot(experience, coins));
+            });
+        }
     }
 
     resetArena() {
@@ -67,11 +66,8 @@ class Arena extends Component {
     }
 
     startNextLevel() {
-        if(this.state.arenaLevel === this.props.enemies.length) {
-            console.log("Last level defeated");
-        }
         let nextLevel = this.state.arenaLevel + 1;
-        this.setState({ playerTurn: true, showLatestAction: false, arenaLevel: nextLevel }, () => {
+        this.setState({ playerTurn: true, showLatestAction: false, arenaLevel: nextLevel, loot: { experience: 0, coins: 0} }, () => {
             this.startArena();
         });
     }
@@ -92,8 +88,7 @@ class Arena extends Component {
 
             if(damage > 0 && healing > 0) {
                 actionText = `Your ${this.state.player.getSpells[index].name} hit ${this.state.enemy.getName} ${damage} damage and restored 
-                ${healing} health points to you.`;
-                
+                ${healing} health points to you.`; 
             }
             else if(damage > 0) {
                 actionText = `Your ${this.state.player.getSpells[index].name} hit ${this.state.enemy.getName} ${damage} damage.`;
@@ -241,10 +236,11 @@ class Arena extends Component {
                                 <h2>Victory</h2>
                                 <div className="loot">
                                     <h5>Rewards</h5>
-                                    <p className="expGain">+{this.state.winnings.experience} experience</p>
-                                    <p className="coinGain">+{this.state.winnings.coins} coins</p>
+                                    <p className="expGain">+{this.state.loot.experience} experience</p>
+                                    <p className="coinGain">+{this.state.loot.coins} <img className="coin" src="/images/icons/coin.png" alt=""/></p>
                                 </div>
-                                <button className="continueBtn" onClick={() => this.startNextLevel()}></button>
+                                {this.state.arenaLevel !== 6 && <button className="continueBtn" onClick={() => this.startNextLevel()}></button>}
+                                {this.state.arenaLevel === 6 && <h3>Congratulations hero, You beat the final enemy!</h3>}
                             </div>
                         }
                         {this.state.status === "LOSER" && 
@@ -280,7 +276,13 @@ class Arena extends Component {
                         </div>
                         <div className="resourcebar">
                             <div className="playerInfo">
-                                <h4>{this.state.player.getName}</h4>
+                                <div>
+                                    <h4>{this.state.player.getName}</h4>
+                                    <div className="playerCoins">
+                                        <img className="coin" src="/images/icons/coin.png" alt=""/>
+                                        <p>{this.props.character.coins}</p>
+                                    </div>
+                                </div>
                                 <div>
                                     <p>Level {this.state.player.getLevel} <span>{this.state.player.getClass}</span></p>
                                     <p>{Math.floor(this.state.player.getRemainingHealth)}/{Math.floor(this.state.player.getMaxHealth)} HP</p>
@@ -296,11 +298,12 @@ class Arena extends Component {
                         </div>
                         <div className="resourcebar">
                             <div className="playerExp">
-                                <p>{this.state.player.getExperience}/{this.state.player.getExperienceToNextLevel} Experience</p>
-                                <p>{this.state.player.getExperienceToNextLevel - this.state.player.getExperience} exp to level {this.state.player.getLevel + 1}</p>
+                                {this.state.player.getLevel === 15 && <p>Max Level</p>}
+                                {this.state.player.getLevel < 15 && <p>{this.state.player.getExperience}/{this.state.player.getExperienceToNextLevel} Experience</p>}
+                                {this.state.player.getLevel < 15 && <p>{this.state.player.getExperienceToNextLevel - this.state.player.getExperience} exp to level {this.state.player.getLevel + 1}</p>}
                             </div>
                             <img className="frame" src={"/images/resourceframe/bar_frame.png"} alt="" />
-                            <div style={{width: ((this.state.player.getExperience/this.props.gameSettings.requiredExperience[this.state.player.getLevel-1]) * 494) + "px"}} className="frame_filler_experience"></div>
+                            {this.state.player.getLevel < 15 && <div style={{width: ((this.state.player.getExperience/this.props.gameSettings.requiredExperience[this.state.player.getLevel-1]) * 494) + "px"}} className="frame_filler_experience"></div>}
                         </div>
                     </div>
                 </React.Fragment>}

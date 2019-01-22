@@ -9,6 +9,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-image: url('./images/background.png');
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-color: #0b0b0b;
   overflow-y: scroll;
 }
 
@@ -52,7 +55,7 @@ p {
     z-index: 1100;
     background: rgb(19, 19, 19);
     box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.4);
-    border: 1px solid rgb(255, 178, 115);
+    border: 10px solid rgb(255, 178, 115);
     padding: 10px 15px;
     display: flex;
     flex-direction: column;
@@ -60,6 +63,8 @@ p {
     display: none;
     font-size: 14px;
     user-select: none;
+
+    border-image: url("../src/images/borderframe.png") 40 round;
 }
 
 .spellDescription .spellName {

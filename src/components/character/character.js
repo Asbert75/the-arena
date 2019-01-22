@@ -4,6 +4,32 @@ import { connect } from "react-redux";
 import "./character.css";
 
 class Character extends Component {
+    saveToDatabase(character) {
+        fetch("/characters/save", {
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            method: "post",
+            body: JSON.stringify(character)
+        }).then(res => {
+            res.json().then(res => console.log(res));
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    }
+
+    deleteFromDatabase(uid) {
+        fetch("/characters/delete/" + uid)
+        .then(res => {
+            res.json().then(res => console.log(res));
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    }
+
   render() {
     return (
         <div id="character">
@@ -17,15 +43,24 @@ class Character extends Component {
                 <h3>Level {this.props.character.level}</h3>
             </div>
             <h4 className="className">{this.props.character.class.name}</h4>
-            {/* <div className="resourcebar">
-                <div className="playerInfo">
-                    <h3>{this.props.character.name}</h3>
-                    <p>Level {this.props.character.level} <span>{this.props.character.class.name}</span></p>
+            <div className="stats">
+                <div>
+                    <h5>Health</h5>
+                    <p>{Math.round(this.props.character.equipment.reduce((previous, current) => previous * current.healthModifier, 1) * this.props.character.class.healthModifier * this.props.gameSettings.baseHealthPerLevel[this.props.character.level-1])}</p>
                 </div>
-                <p className="experience">{this.props.character.experience}/{this.props.gameSettings.requiredExperience[this.props.character.level-1]} experience</p>
-                <img className="frame" src={"/images/resourceframe/bar_frame.png"} alt="" />
-                <div style={{width: ((this.props.character.experience/this.props.gameSettings.requiredExperience[this.props.character.level-1]) * 494) + "px"}} className="frame_filler_experience"></div>
-            </div> */}
+                <div>
+                    <h5>{this.props.character.class.resourceType}</h5>
+                    <p>{Math.round(this.props.character.equipment.reduce((previous, current) => previous * current.resourceModifier, 1) * this.props.character.class.resourceModifier * this.props.gameSettings.baseResourcesPerLevel[this.props.character.level-1])}</p>
+                </div>
+                <div>
+                    <h5>Damage</h5>
+                    <p>{(this.props.character.equipment.reduce((previous, current) => previous * current.damageModifier, 1) * this.props.character.class.damageModifier).toFixed(2)}x</p>
+                </div>
+                <div>
+                    <h5>Healing</h5>
+                    <p>{(this.props.character.equipment.reduce((previous, current) => previous * current.healingModifier, 1) * this.props.character.class.healingModifier).toFixed(2)}x</p>
+                </div>
+            </div>
             <h4 className="spellsHeader">Spells</h4>
             <div className="spells">{this.props.character.spells.map(spell => (
                     <div key={spell.id} className="spell">

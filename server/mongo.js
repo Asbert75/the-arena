@@ -1,50 +1,62 @@
-const Client = require("mongodb").MongoClient
-const ObjectId = require('mongodb').ObjectId
-const url = "mongodb://127.0.0.1:27017"
+const data = {
+    user: "arenaUser",
+    pass: "arenaPass1"
+};
+const Client = require("mongodb").MongoClient;
+const url = `mongodb://${data.user}:${data.pass}@ds161224.mlab.com:61224/the-arena`;
 
-let error = msg => {
-    return { "error": msg }
-}
+const database = {
+    saveCharacter(character, callback) {
+        Client.connect(url, { useNewUrlParser: true }, (err, client) => {
+            if(err) {
+                console.log(err);
+                return true;
+            }
 
-const groups = {
-    getAll: function(callback) {
-        Client.connect(url, { useNewUrlParser: true }, function(err, client) {
-            const db = client.db("theWall")
-            const collection = db.collection("groups")
+            character.spells = character.spells.map(spell => { return {id: spell.id, rank: spell.rank}});
+            character.equipment = character.equipment.map(item => item.id);
 
-            let resultArray = [];
-            let cursor = collection.find({});
+            let collection = client.db("the-arena").collection("characters");
 
-            cursor.forEach(function(doc, err){
-                resultArray.push(doc);
-            }, function(){
+            collection.updateOne({ uid: character.uid }, { $set: character}, {upsert: true}, (err, res) => {
+                if(err) console.log(err);
+                else callback();
                 client.close();
-                callback(resultArray); // can't simply return a value from an asynchronous function call. Thats why a callback was needed here (https://stackoverflow.com/questions/42235886/express-res-send-is-not-returning-the-result-of-my-module-exported-function-that)
             });
         });
     },
-    join: function(groupId, userId, callback) {
-        Client.connect(url, { useNewUrlParser: true }, function(err, client) {
-            const db = client.db("theWall")
-            const collection = db.collection("groups")
+    deleteCharacter(uid, callback) {
+        Client.connect(url, { useNewUrlParser: true }, (err, client) => {
+            if(err) {
+                console.log(err);
+                return true;
+            }
 
-            collection.updateOne({ "_id": ObjectId(groupId) }, { $push: { "members": ObjectId(userId) }})
-            
-            client.close()
-            callback({ "msg": "Added user " + userId + " to group " + groupId })
+            let collection = client.db("the-arena").collection("characters");
+
+            collection.deleteOne({uid}, (err, res) => {
+                if(err) console.log(err);
+                else callback();
+                client.close();
+            });
         });
-      },
-    leave: function(groupId, userId, callback) {
-        Client.connect(url, { useNewUrlParser: true }, function(err, client) {
-            const db = client.db("theWall")
-            const collection = db.collection("groups")
+    },
+    getCharacters(callback) {
+        Client.connect(url, { useNewUrlParser: true }, (err, client) => {
+            if(err) {
+                console.log(err);
+                return true;
+            }
 
-            collection.updateOne({ "_id": ObjectId(groupId) }, { $pull: { "members": ObjectId(userId) }})
-            
-            client.close()
-            callback({ "msg": "Removed user " + userId + " from group " + groupId })
+            let collection = client.db("the-arena").collection("characters");
+
+            collection.find({}).toArray((err, docs) => {
+                if(err) console.log(err)
+                else callback(docs);
+                client.close();
+            });
         });
     }
 }
 
-module.exports = groups
+module.exports = database

@@ -9,10 +9,10 @@ class Navigation extends Component {
   render() {
     return (
       <div id="navigation">
-        <img className="logo" src={"/images/arena.png"} alt="" />
+        <img className="logo" src={"/images/arena2.png"} alt="" />
         <ul>
           <li className={ this.props.showCharacterCreation ? "active" : null }>
-            <button onClick={() => this.props.dispatch(showCharacterCreation())}>New Character</button>
+            <button onClick={() => this.props.dispatch(showCharacterCreation())}>Characters</button>
           </li>
           <li className={ this.props.showCharacter ? "active" : null }>
             <button onClick={() => this.props.dispatch(showCharacter())} disabled={this.props.characterClass === null}>My Character</button>
@@ -27,7 +27,6 @@ class Navigation extends Component {
             <button onClick={() => this.props.dispatch(showCredits())}>Credits</button>
           </li>
         </ul>
-        <div className="border" />
       </div>
     );
   }

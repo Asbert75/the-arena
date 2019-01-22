@@ -3,7 +3,6 @@
     padding-top: 1em;
     display: flex;
     flex-direction: column;
-    align-items: center;
 }
 
 #character .spells {
@@ -130,4 +129,23 @@
 #character .item .header h4 {
     width: 190px;
     margin-left: 6px;
+}
+
+#character .stats {
+    width: 800px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+#character .stats h5 {
+    color: white;
+}
+
+#character .stats p {
+    font-size: 24px;
+    color: rgb(108, 199, 108);
+    text-align: center;
 }
