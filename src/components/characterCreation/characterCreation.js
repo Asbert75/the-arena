@@ -44,7 +44,7 @@ const mapStateToProps = state => {
   return {
     classes: state.classes,
     spells: state.spells,
-    gameSettings: state.gameSettings,
+    settings: state.settings,
     refresh: state.refresh,
   };
 };

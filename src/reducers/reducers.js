@@ -1,14 +1,31 @@
+import Spell from "../classes/spell";
+import Equipment from "../classes/equipment";
 const uuid = require('uuid/v4');
+
+function saveToLocalStorage(character) {
+    let local = {
+        class: character.class,
+        name: character.name,
+        level: character.level,
+        coins: character.coins,
+        experience: character.experience,
+        uid: character.uid
+    }
+
+    local.spells = character.spells.map(spell => spell.properties);
+    local.equipment = character.equipment.map(equipment => equipment.properties);
+    localStorage.setItem("character", JSON.stringify(local));
+}
 
 let rootReducer = (state, action) => {
     let newState = {...state };
     let spells = [], equipment = [];
 
     if(newState.character.spells.length !== 0) {
-        spells = [...newState.character.spells];
+        spells = newState.character.spells.map(spell => new Spell(spell));
     }
     if(newState.character.equipment.length !== 0) {
-        equipment = [...newState.character.equipment];
+        equipment = newState.character.equipment.map(equipment => new Equipment(equipment));
     }
     let newCharacter = {...newState.character, spells, equipment};
 
@@ -69,15 +86,16 @@ let rootReducer = (state, action) => {
             newState.showIntroduction = false;
 
             newCharacter.class = action.selectedClass;
-            newCharacter.spells = action.spells.map(spell => ({...spell}));
+            newCharacter.spells = action.spells;
             newCharacter.equipment = [];
             newCharacter.name = action.name;
-            newCharacter.level = 1;
-            newCharacter.coins = 0;
+            newCharacter.level = 15;
+            newCharacter.coins = 10000;
             newCharacter.experience = 0;
             newCharacter.uid = uuid();
 
-            localStorage.setItem("character", JSON.stringify(newCharacter));
+            saveToLocalStorage(newCharacter);
+
             newState.character = newCharacter;
             return newState;
         case "GIVE_LOOT":
@@ -87,26 +105,25 @@ let rootReducer = (state, action) => {
             if(newCharacter.level === 15) {
                 newCharacter.experience = 0;
             }
-            else if(newCharacter.experience > newState.gameSettings.requiredExperience[newState.character.level-1]) {
+            else if(newCharacter.experience > newState.settings.requiredExperience[newState.character.level-1]) {
                 newCharacter.level += 1;
                 if(newCharacter.level === 15) {
                     newCharacter.experience = 0;
                 }
-                newCharacter.experience -= newState.gameSettings.requiredExperience[newState.character.level-1];
+                newCharacter.experience -= newState.settings.requiredExperience[newState.character.level-1];
             }
 
-            localStorage.setItem("character", JSON.stringify(newCharacter));
+            saveToLocalStorage(newCharacter);
             newState.character = newCharacter;
             return newState;
         case "UPGRADE_SPELL":
             if(newCharacter.coins >= action.cost) {
-                newCharacter.spells[action.spellIndex].rank = action.newRank;
+                newCharacter.spells[action.spellIndex] = new Spell(action.newSpell);
                 newCharacter.coins -= action.cost;
             }
             
-            localStorage.setItem("character", JSON.stringify(newCharacter));
+            saveToLocalStorage(newCharacter);
             newState.character = newCharacter;
-            console.log(newState);
             return newState;
         case "PURCHASE_ITEM":
             if(newCharacter.coins >= action.item.cost) {
@@ -114,12 +131,12 @@ let rootReducer = (state, action) => {
                 newCharacter.coins -= action.item.cost;
             }
 
-            localStorage.setItem("character", JSON.stringify(newCharacter));
+            saveToLocalStorage(newCharacter);
             newState.character = newCharacter;
             return newState;
         case "LOAD_CHARACTER":
             if(action.cached !== true) {
-                localStorage.setItem("character", JSON.stringify(action.character));
+                saveToLocalStorage(action.character);
             }
             
             newState.showCharacterCreation = false;
@@ -131,7 +148,6 @@ let rootReducer = (state, action) => {
 
             newCharacter = action.character;
             newState.character = newCharacter;
-            console.log(newState);
             return newState;
         default:
             return state;

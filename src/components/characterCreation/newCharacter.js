@@ -4,6 +4,11 @@ import "./newCharacter.css";
 import { connect } from "react-redux";
 import { setClass } from "../../actions/actions";
 
+import spells from "../../states/spells";
+import Spell from "../../classes/spell";
+
+import classes from "../../states/classes";
+
 class NewCharacter extends Component {
     constructor() {
         super();
@@ -12,9 +17,15 @@ class NewCharacter extends Component {
             selectedId: 0,
             characterName: "",
             nameError: false,
+            spells: []
         }
 
         this.handleNameChange = this.handleNameChange.bind(this);
+    }
+
+    componentDidMount() {
+        let spellArray = spells.map(spell => new Spell(spell));
+        this.setState({ spells: spellArray });
     }
 
     selectClass(selectedClass) {
@@ -37,11 +48,11 @@ class NewCharacter extends Component {
         let availableSpells = [];
 
         spellList.forEach(availableSpell => {
-        this.props.spells.forEach(spell => {
-            if (spell.id === availableSpell) {
-            availableSpells.push(spell);
-            }
-        });
+            this.state.spells.forEach(spell => {
+                if(spell.id === availableSpell) {
+                    availableSpells.push(spell);
+                }
+            });
         });
 
         return availableSpells;
@@ -57,7 +68,7 @@ class NewCharacter extends Component {
         </div>
         <h3 className="classesHeader">Select yOUr Class</h3>
         <div className="classes">
-            {this.props.classes.map(currentClass => (
+            {classes.map(currentClass => (
                 <div key={currentClass.id} className={this.state.selectedId === currentClass.id ? "classframe selected hoverable" : "classframe hoverable"} onClick={() => this.setState({ selectedId: currentClass.id })}>
                     <img className="frame" src={"/images/classframe/classframe.png"} alt="" />
                     <img className="frame_active" src={"/images/classframe/classframe_active.png"} alt="" />
@@ -66,7 +77,7 @@ class NewCharacter extends Component {
             ))}
         </div>
         <div className="classList">
-            {this.props.classes.map(currentClass => (
+            {classes.map(currentClass => (
             <div className={ this.state.selectedId === currentClass.id ? "class selected" : "class"} key={currentClass.id}>
                 <div className="header">
                 <div className="classframe">
@@ -117,9 +128,7 @@ class NewCharacter extends Component {
 
 const mapStateToProps = state => {
   return {
-    classes: state.classes,
-    spells: state.spells,
-    gameSettings: state.gameSettings
+    settings: state.settings
   };
 };
 

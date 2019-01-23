@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import Player from "../../classes/player";
 import Enemy from "../../classes/enemy";
 
+import enemies from "../../states/enemies";
+
 import "./arena.css";
 import { giveLoot } from "../../actions/actions";
 
@@ -27,9 +29,9 @@ class Arena extends Component {
     }
 
     startArena() {
-        let enemy = new Enemy(this.props.enemies[this.state.arenaLevel-1], this.props.gameSettings.baseHealthPerLevel);
-        let player = new Player(this.props.character, this.props.gameSettings.baseHealthPerLevel, 
-            this.props.gameSettings.baseResourcesPerLevel, this.props.gameSettings.requiredExperience[this.props.character.level-1]);
+        let enemy = new Enemy(enemies[this.state.arenaLevel-1], this.props.settings.baseHealthPerLevel);
+        let player = new Player(this.props.character, this.props.settings.baseHealthPerLevel, 
+            this.props.settings.baseResourcesPerLevel, this.props.settings.requiredExperience[this.props.character.level-1]);
         this.setState({ enemy, player}, () => {
             this.addSpellEventListeners();
             this.setState({ status: "INPROGRESS" });
@@ -303,7 +305,7 @@ class Arena extends Component {
                                 {this.state.player.getLevel < 15 && <p>{this.state.player.getExperienceToNextLevel - this.state.player.getExperience} exp to level {this.state.player.getLevel + 1}</p>}
                             </div>
                             <img className="frame" src={"/images/resourceframe/bar_frame.png"} alt="" />
-                            {this.state.player.getLevel < 15 && <div style={{width: ((this.state.player.getExperience/this.props.gameSettings.requiredExperience[this.state.player.getLevel-1]) * 494) + "px"}} className="frame_filler_experience"></div>}
+                            {this.state.player.getLevel < 15 && <div style={{width: ((this.state.player.getExperience/this.props.settings.requiredExperience[this.state.player.getLevel-1]) * 494) + "px"}} className="frame_filler_experience"></div>}
                         </div>
                     </div>
                 </React.Fragment>}
@@ -315,7 +317,7 @@ class Arena extends Component {
 const mapStateToProps = state => {
   return {
     character: state.character,
-    gameSettings: state.gameSettings,
+    settings: state.settings,
     enemies: state.enemies,
     state: state
   };

@@ -5,15 +5,24 @@ import "./character.css";
 
 class Character extends Component {
     saveToDatabase(character) {
-        fetch("/characters/save", {
+        let saveableCharacter = {
+            ...character
+        }
+
+        saveableCharacter.spells = character.spells.map(spell => spell.properties);
+        saveableCharacter.equipment = character.equipment.map(equipment => equipment.properties);
+
+        fetch("http://localhost:4000/characters/save", {
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json"
             },
             method: "post",
-            body: JSON.stringify(character)
+            body: JSON.stringify(saveableCharacter)
         }).then(res => {
-            res.json().then(res => console.log(res));
+            res.json()
+            .then(res => console.log(res))
+            .catch(err => console.log(err));
         })
         .catch(err => {
             console.log(err);
@@ -21,9 +30,13 @@ class Character extends Component {
     }
 
     deleteFromDatabase(uid) {
-        fetch("/characters/delete/" + uid)
+        fetch("http://localhost:4000/characters/delete/" + uid, {
+            method: "delete"
+        })
         .then(res => {
-            res.json().then(res => console.log(res));
+            res.json()
+            .then(res => console.log(res))
+            .catch(err => console.log(err));
         })
         .catch(err => {
             console.log(err);
@@ -33,6 +46,8 @@ class Character extends Component {
   render() {
     return (
         <div id="character">
+            <button className="saveBtn" onClick={() => this.saveToDatabase(this.props.character)}>SAVE CHARACTER</button>
+            <button className="deleteBtn" onClick={() => this.deleteFromDatabase(this.props.character.uid)}>DELETE CHARACTER</button>
             <div className="class">
                 <h3>{this.props.character.name}</h3>
                 <div className="classframe">
@@ -46,11 +61,11 @@ class Character extends Component {
             <div className="stats">
                 <div>
                     <h5>Health</h5>
-                    <p>{Math.round(this.props.character.equipment.reduce((previous, current) => previous * current.healthModifier, 1) * this.props.character.class.healthModifier * this.props.gameSettings.baseHealthPerLevel[this.props.character.level-1])}</p>
+                    <p>{Math.round(this.props.character.equipment.reduce((previous, current) => previous * current.healthModifier, 1) * this.props.character.class.healthModifier * this.props.settings.baseHealthPerLevel[this.props.character.level-1])}</p>
                 </div>
                 <div>
                     <h5>{this.props.character.class.resourceType}</h5>
-                    <p>{Math.round(this.props.character.equipment.reduce((previous, current) => previous * current.resourceModifier, 1) * this.props.character.class.resourceModifier * this.props.gameSettings.baseResourcesPerLevel[this.props.character.level-1])}</p>
+                    <p>{Math.round(this.props.character.equipment.reduce((previous, current) => previous * current.resourceModifier, 1) * this.props.character.class.resourceModifier * this.props.settings.baseResourcesPerLevel[this.props.character.level-1])}</p>
                 </div>
                 <div>
                     <h5>Damage</h5>
@@ -114,7 +129,7 @@ class Character extends Component {
 const mapStateToProps = state => {
   return {
     character: state.character,
-    gameSettings: state.gameSettings
+    settings: state.settings
   };
 };
 

@@ -45,12 +45,12 @@ let giveLoot = (experience, coins) => {
     }
 }
 
-let upgradeSpell = (spellIndex, cost, newRank) => {
+let upgradeSpell = (spellIndex, cost, newSpell) => {
     return {
         type: "UPGRADE_SPELL",
         spellIndex,
         cost,
-        newRank
+        newSpell
     }
 }
 

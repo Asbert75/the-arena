@@ -11,6 +11,8 @@ import "./App.css";
 import { connect } from "react-redux";
 
 import { showCharacterCreation, loadCharacter } from "./actions/actions";
+import Spell from "./classes/spell";
+import Equipment from "./classes/equipment";
 
 class App extends Component {
     storageAvailable(type) {
@@ -40,6 +42,8 @@ class App extends Component {
     getCachedCharacter() {
         let cachedCharacter = JSON.parse(localStorage.getItem("character"));
         if(cachedCharacter) {
+            cachedCharacter.spells = cachedCharacter.spells.map(spell => new Spell(spell));
+            cachedCharacter.equipment = cachedCharacter.equipment.map(equipment => new Equipment(equipment));
             this.props.dispatch(loadCharacter(cachedCharacter, true));
         }
     }

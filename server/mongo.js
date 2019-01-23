@@ -13,9 +13,6 @@ const database = {
                 return true;
             }
 
-            character.spells = character.spells.map(spell => { return {id: spell.id, rank: spell.rank}});
-            character.equipment = character.equipment.map(item => item.id);
-
             let collection = client.db("the-arena").collection("characters");
 
             collection.updateOne({ uid: character.uid }, { $set: character}, {upsert: true}, (err, res) => {

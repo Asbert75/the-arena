@@ -1,14 +1,28 @@
 class Spell {
-    constructor(id, name, icon, description, resourceCost, baseDamage, baseHealing, rank, rankModifier) {
-        this._id = id;
-        this._name = name;
-        this._icon = icon;
-        this._description = description;
-        this._resourceCost = resourceCost;
-        this._baseDamage = baseDamage;
-        this._baseHealing = baseHealing;
-        this._rank = rank;
-        this._rankModifier = rankModifier;
+    constructor(spell) {
+        this._id = spell.id;
+        this._name = spell.name;
+        this._icon = spell.icon;
+        this._description = spell.description;
+        this._resourceCost = spell.resourceCost;
+        this._baseDamage = spell.baseDamage;
+        this._baseHealing = spell.baseHealing;
+        this._rank = spell.rank;
+        this._rankModifier = spell.rankModifier;
+    }
+
+    get properties() {
+        return {
+            id: this._id,
+            name: this._name,
+            icon: this._icon,
+            description: this._description,
+            resourceCost: this._resourceCost,
+            baseDamage: this._baseDamage,
+            baseHealing: this._baseHealing,
+            rank: this._rank,
+            rankModifier: [...this._rankModifier]
+        };
     }
 
     get id() {

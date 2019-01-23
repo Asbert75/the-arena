@@ -4,6 +4,9 @@ import "./loadCharacter.css";
 import { connect } from "react-redux";
 import { loadCharacter } from "../../actions/actions";
 
+import Spell from "../../classes/spell";
+import Equipment from "../../classes/equipment";
+
 class LoadCharacter extends Component {
     constructor() {
         super();
@@ -27,12 +30,10 @@ class LoadCharacter extends Component {
             res.json().then(characters => {
                 characters = characters.map(character => {
                     character.spells = character.spells.map(spell => {
-                        let newSpell = this.props.spells.find(stateSpell => stateSpell.id === spell.id);
-                        newSpell.rank = spell.rank;
-                        return newSpell;
+                        return new Spell(spell);
                     });
-                    character.equipment = character.equipment.map(item => {
-                        return this.props.equipment.find(equipment => equipment.id === item);
+                    character.equipment = character.equipment.map(equipment => {
+                        return new Equipment(equipment);
                     });
                     return character;
                 });
@@ -61,10 +62,10 @@ class LoadCharacter extends Component {
                 {this.state.errorOccured && <p>An error occured while loading characters...</p>}
                 {this.state.characters.length > 0 && this.state.characters.map(character => {
                     return (
-                    <div key={character.uid} onClick={() => this.selectCharacter(character)}>
-                        <p>{character.name} L{character.level} {character.coins}C {character.experience} exp</p>
-                        <p>{character.class.name}</p>
-                    </div>
+                        <div key={character.uid} onClick={() => this.selectCharacter(character)}>
+                            <p>{character.name} L{character.level} {character.coins}C {character.experience} exp</p>
+                            <p>{character.class.name}</p>
+                        </div>
                     )
                 })}
             </div>
@@ -74,9 +75,7 @@ class LoadCharacter extends Component {
 
 const mapStateToProps = state => {
   return {
-    character: state.character,
-    spells: state.spells,
-    equipment: state.equipment
+    character: state.character
   };
 };
 
