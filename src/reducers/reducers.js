@@ -89,8 +89,8 @@ let rootReducer = (state, action) => {
             newCharacter.spells = action.spells;
             newCharacter.equipment = [];
             newCharacter.name = action.name;
-            newCharacter.level = 15;
-            newCharacter.coins = 10000;
+            newCharacter.level = 1;
+            newCharacter.coins = 0;
             newCharacter.experience = 0;
             newCharacter.uid = uuid();
 
