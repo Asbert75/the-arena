@@ -1,0 +1,103 @@
+#loadCharacter p {
+    font-size: 14px;
+}
+
+#loadCharacter .characters {
+    height: 600px;
+    width: 800px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+}
+
+#loadCharacter .character {
+    width: 780px;
+    margin-right: 10px;
+    padding: 0.5em;
+    border: 3px solid black;
+    border-image: url("../../images/borderframe.png") 10;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 1);
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+#loadCharacter .name {
+    margin-left: 10px;
+    margin-right: 20px;
+}
+
+#loadCharacter .name span {
+    color: #ffb273;
+}
+
+#loadCharacter .stats {
+    display: flex;
+    flex-direction: row;
+}
+
+#loadCharacter .stats div {
+    margin: 10px;
+}
+
+#loadCharacter .spells {
+    display: flex;
+    flex-direction: row;
+}
+
+#loadCharacter .spells > div {
+    margin: 10px;
+}
+
+#loadCharacter .spellRanks {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 8px;
+    margin-left: -3px;
+}
+
+#loadCharacter .spellRanks .learned {
+    width: 10px;
+    height: 10px;
+    border-radius: 100%;
+    background: #ffb273;
+    margin-left: 5px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+#loadCharacter .spellRanks .notLearned {
+    width: 10px;
+    height: 10px;
+    border-radius: 100%;
+    background: black;
+    margin-left: 5px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+#loadCharacter button {
+    background: none;
+    border: none;
+    outline: none;
+    width: 128px;
+    height: 39px;
+    opacity: 0.8;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+#loadCharacter button:hover {
+    opacity: 1;
+    cursor: pointer;
+}
+
+#loadCharacter button:active {
+    opacity: 0.6;
+}
+
+#loadCharacter .load {
+    margin-bottom: 5px;
+    background-image: url('../../images/load_character.png');
+}

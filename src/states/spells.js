@@ -48,7 +48,7 @@ const spells = [
         baseDamage: 20,
         baseHealing: 0,
         rank: 1,
-        rankModifier: [1, 1.55, 2.15]
+        rankModifier: [1, 2.1, 3.15]
     }, {
         id: 5,
         name: "Skull Bash",
@@ -58,7 +58,7 @@ const spells = [
         baseDamage: 30,
         baseHealing: 0,
         rank: 1,
-        rankModifier: [1, 1.65, 2.5]
+        rankModifier: [1, 2, 2.95]
     }, {
         id: 6,
         name: "Ambush",

@@ -69,6 +69,19 @@ let loadCharacter = (character, cached) => {
     }
 }
 
+let resetCharacter = () => {
+    return {
+        type: "RESET_CHARACTER"
+    }
+}
+
+let setAccountId = (accountId = null) => {
+    return {
+        type: "SET_ACCOUNT_ID",
+        accountId
+    }
+}
+
 export {
     showCharacterCreation,
     showCredits,
@@ -79,5 +92,7 @@ export {
     giveLoot,
     upgradeSpell,
     purchaseItem,
-    loadCharacter
+    loadCharacter,
+    resetCharacter,
+    setAccountId
 };

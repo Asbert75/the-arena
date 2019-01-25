@@ -3,16 +3,26 @@ import { connect } from "react-redux";
 
 import "./character.css";
 
+import { resetCharacter } from "../../actions/actions";
+
 class Character extends Component {
+    constructor() {
+        super();
+
+        this.state = {
+            saved: false
+        }
+    }
     saveToDatabase(character) {
         let saveableCharacter = {
-            ...character
+            ...character,
+            accountId: this.props.accountId
         }
 
         saveableCharacter.spells = character.spells.map(spell => spell.properties);
         saveableCharacter.equipment = character.equipment.map(equipment => equipment.properties);
 
-        fetch("http://localhost:4000/characters/save", {
+        fetch("/characters/save", {
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json"
@@ -21,8 +31,14 @@ class Character extends Component {
             body: JSON.stringify(saveableCharacter)
         }).then(res => {
             res.json()
-            .then(res => console.log(res))
-            .catch(err => console.log(err));
+            .then(res => {
+                // localStorage.setItem("character", saveableCharacter);
+                this.setState({ saved: true }, () => setTimeout(() => { this.setState({ saved: false })}, 3000));
+                console.log(res)
+            })
+            .catch(err => {
+                console.log(err)
+            });
         })
         .catch(err => {
             console.log(err);
@@ -30,13 +46,18 @@ class Character extends Component {
     }
 
     deleteFromDatabase(uid) {
-        fetch("http://localhost:4000/characters/delete/" + uid, {
+        fetch("/characters/delete/" + uid, {
             method: "delete"
         })
         .then(res => {
             res.json()
-            .then(res => console.log(res))
-            .catch(err => console.log(err));
+            .then(res => {
+                this.props.dispatch(resetCharacter());
+                console.log(res)
+            })
+            .catch(err => {
+                console.log(err);
+            });
         })
         .catch(err => {
             console.log(err);
@@ -46,8 +67,11 @@ class Character extends Component {
   render() {
     return (
         <div id="character">
-            <button className="saveBtn" onClick={() => this.saveToDatabase(this.props.character)}>SAVE CHARACTER</button>
-            <button className="deleteBtn" onClick={() => this.deleteFromDatabase(this.props.character.uid)}>DELETE CHARACTER</button>
+            {this.state.saved && <h5 className="saved">Character data saved!</h5>}
+            <div className="btns">
+                <button className="save" onClick={() => this.saveToDatabase(this.props.character)}></button>
+                <button className="delete" onClick={() => this.deleteFromDatabase(this.props.character.uid)}></button>
+            </div>
             <div className="class">
                 <h3>{this.props.character.name}</h3>
                 <div className="classframe">
@@ -129,7 +153,8 @@ class Character extends Component {
 const mapStateToProps = state => {
   return {
     character: state.character,
-    settings: state.settings
+    settings: state.settings,
+    accountId: state.accountId
   };
 };
 

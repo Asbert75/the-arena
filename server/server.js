@@ -13,8 +13,8 @@ app.use(express.static(path.join(__dirname, '..', 'build/')))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get("/characters/get", (req, res) => {
-    database.getCharacters((characters) => {
+app.get("/characters/get/:accountId", (req, res) => {
+    database.getCharacters(req.params.accountId, (characters) => {
         res.send(characters);
     });
 });

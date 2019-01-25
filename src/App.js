@@ -10,7 +10,7 @@ import "./App.css";
 
 import { connect } from "react-redux";
 
-import { showCharacterCreation, loadCharacter } from "./actions/actions";
+import { showCharacterCreation, loadCharacter, setAccountId } from "./actions/actions";
 import Spell from "./classes/spell";
 import Equipment from "./classes/equipment";
 
@@ -39,19 +39,33 @@ class App extends Component {
         }
     }
 
-    getCachedCharacter() {
-        let cachedCharacter = JSON.parse(localStorage.getItem("character"));
-        if(cachedCharacter) {
-            cachedCharacter.spells = cachedCharacter.spells.map(spell => new Spell(spell));
-            cachedCharacter.equipment = cachedCharacter.equipment.map(equipment => new Equipment(equipment));
-            this.props.dispatch(loadCharacter(cachedCharacter, true));
-        }
-    }
+    // getCachedCharacter() {
+    //     let cachedCharacter = JSON.parse(localStorage.getItem("character"));
+    //     if(cachedCharacter) {
+    //         cachedCharacter.spells = cachedCharacter.spells.map(spell => new Spell(spell));
+    //         cachedCharacter.equipment = cachedCharacter.equipment.map(equipment => new Equipment(equipment));
+    //         this.props.dispatch(loadCharacter(cachedCharacter, true));
+    //     }
+    // }
 
     componentDidMount() {
         if(this.storageAvailable('localStorage')) {
-            this.getCachedCharacter();
+            // this.getCachedCharacter();
+
+            let accountId = localStorage.getItem("accountId");
+            if(!accountId) {
+                this.props.dispatch(setAccountId());
+            }
+            else {
+                this.props.dispatch(setAccountId(accountId));
+            }
         }
+
+        window.addEventListener("keydown", (event) => {
+            if(event.key === "a") {
+                console.log(this.props.state);
+            }
+        });
     }
 
     render() {
@@ -59,22 +73,22 @@ class App extends Component {
             <div id="app">
                 <Navigation />
                 { this.props.showIntroduction && (
-                <div className="introduction">
-                    <h2>Welcome, adventurer!</h2>
-                    <p>
-                    This is the arena. A web-based fighting game where you can create a
-                    character and use it to fight enemies in one-versus-one combat. Shall
-                    you win, you will be rewarded with experience points as well as
-                    coins, which you can use to purchase upgraded spells and
-                    abilities.
-                    <br />
-                    <br />
-                    Ready to create your character? 
-                    </p>
-                    <div>
-                        <button className="createBtn" onClick={() => this.props.dispatch(showCharacterCreation())}></button>
+                    <div className="introduction">
+                        <h2>Welcome, adventurer!</h2>
+                        <p>
+                        This is the arena. A web-based fighting game where you can create a
+                        character and use it to fight enemies in one-versus-one combat. Shall
+                        you win, you will be rewarded with experience points as well as
+                        coins, which you can use to purchase upgraded spells and
+                        abilities.
+                        <br />
+                        <br />
+                        Ready to create your character? 
+                        </p>
+                        <div>
+                            <button className="createBtn" onClick={() => this.props.dispatch(showCharacterCreation())}></button>
+                        </div>
                     </div>
-                </div>
                 )}
                 { this.props.showCharacterCreation && <CharacterCreation /> }
                 { this.props.showCredits && <Credits /> }
@@ -94,7 +108,8 @@ const mapStateToProps = state => {
     showStore: state.showStore,
     showCharacter: state.showCharacter,
     showIntroduction: state.showIntroduction,
-    character: state.character
+    character: state.character,
+    state: state
   };
 };
 

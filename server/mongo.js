@@ -15,7 +15,19 @@ const database = {
 
             let collection = client.db("the-arena").collection("characters");
 
-            collection.updateOne({ uid: character.uid }, { $set: character}, {upsert: true}, (err, res) => {
+            collection.updateOne({ uid: character.uid}, 
+                { $set: { 
+                    class: character.class, 
+                    coins: character.coins,
+                    level: character.level,
+                    experience: character.experience,
+                    spells: character.spells,
+                    equipment: character.equipment,
+                    name: character.name,
+                    accountId: character.accountId,
+                    uid: character.uid
+                }}, 
+                {upsert: true}, (err, res) => {
                 if(err) console.log(err);
                 else callback();
                 client.close();
@@ -31,14 +43,14 @@ const database = {
 
             let collection = client.db("the-arena").collection("characters");
 
-            collection.deleteOne({uid}, (err, res) => {
+            collection.deleteOne({ uid }, (err, res) => {
                 if(err) console.log(err);
                 else callback();
                 client.close();
             });
         });
     },
-    getCharacters(callback) {
+    getCharacters(id, callback) {
         Client.connect(url, { useNewUrlParser: true }, (err, client) => {
             if(err) {
                 console.log(err);
@@ -47,7 +59,7 @@ const database = {
 
             let collection = client.db("the-arena").collection("characters");
 
-            collection.find({}).toArray((err, docs) => {
+            collection.find({accountId: id}).toArray((err, docs) => {
                 if(err) console.log(err)
                 else callback(docs);
                 client.close();

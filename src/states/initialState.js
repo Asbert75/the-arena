@@ -19,7 +19,8 @@ const initialState = {
         equipment: [],
         name: "",
         uid: null
-    }
+    },
+    accountId: null
 }
 
 export default initialState;

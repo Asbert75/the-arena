@@ -19,7 +19,7 @@ class LoadCharacter extends Component {
     }
 
     componentDidMount() {
-        fetch("http://localhost:4000/characters/get", {
+        fetch("/characters/get/" + this.props.accountId, {
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json"
@@ -42,7 +42,7 @@ class LoadCharacter extends Component {
                     this.setState({ characters, loadingFinished: true, errorOccured: false });
                 }
                 else {
-                    this.setState({ errorOccured: true });
+                    this.setState({ status: "No characters found...", loadingFinished: true, errorOccured: false });
                 }
             });
         })
@@ -51,23 +51,66 @@ class LoadCharacter extends Component {
         });
     }
 
-    selectCharacter(character) {
-        this.props.dispatch(loadCharacter(character));
-    }
-
     render() {
         return (
             <div id="loadCharacter">
                 {!this.state.loadingFinished && !this.state.errorOccured && <p>Loading characters...</p>}
                 {this.state.errorOccured && <p>An error occured while loading characters...</p>}
-                {this.state.characters.length > 0 && this.state.characters.map(character => {
-                    return (
-                        <div key={character.uid} onClick={() => this.selectCharacter(character)}>
-                            <p>{character.name} L{character.level} {character.coins}C {character.experience} exp</p>
-                            <p>{character.class.name}</p>
-                        </div>
-                    )
-                })}
+                {this.state.status && <p>{this.state.status}</p>}
+                {this.state.characters.length > 0 && 
+                    <div className="characters">
+                        {this.state.characters.map(character => {
+                            return (
+                                <div className="character" key={character.uid}>
+                                    <div>
+                                        <div className="classframe">
+                                            <img className="frame" src={"/images/classframe/classframe.png"} alt="" />
+                                            <img className="frame_active" src={"/images/classframe/classframe_active.png"} alt="" />
+                                            <img className="frame_icon" src={"/images/" + character.class.icon} alt="" />
+                                        </div>
+                                        <div className="name">
+                                            <h4>{character.name}</h4>
+                                            <p>Level {character.level} <span>{character.class.name}</span></p>
+                                        </div>
+                                    </div>
+                                    <div className="info">
+                                        <div className="stats">
+                                            <div>
+                                                <h5>Health</h5>
+                                                <p>{Math.round(character.equipment.reduce((previous, current) => previous * current.healthModifier, 1) * character.class.healthModifier * this.props.settings.baseHealthPerLevel[character.level-1])}</p>
+                                            </div>
+                                            <div>
+                                                <h5>{character.class.resourceType}</h5>
+                                                <p>{Math.round(character.equipment.reduce((previous, current) => previous * current.resourceModifier, 1) * character.class.resourceModifier * this.props.settings.baseResourcesPerLevel[character.level-1])}</p>
+                                            </div>
+                                            <div>
+                                                <h5>Damage</h5>
+                                                <p>{(character.equipment.reduce((previous, current) => previous * current.damageModifier, 1) * character.class.damageModifier).toFixed(2)}x</p>
+                                            </div>
+                                            <div>
+                                                <h5>Healing</h5>
+                                                <p>{(character.equipment.reduce((previous, current) => previous * current.healingModifier, 1) * character.class.healingModifier).toFixed(2)}x</p>
+                                            </div>
+                                        </div>
+                                        <div className="spells">
+                                            {character.spells.map(spell => {
+                                                return (
+                                                    <div key={spell.id}>
+                                                        <h5>{spell.name}</h5>
+                                                        <div className="spellRanks">
+                                                            {spell.rankModifier.map((modifier, index) => <div key={index} className={spell.rank > index ? "learned": "notLearned"}></div>)}
+                                                        </div>
+                                                    </div>
+                                                )
+                                            })}
+                                        </div>
+                                    </div>
+                                    <button className="load" onClick={() => this.props.dispatch(loadCharacter(character))}></button>
+                                </div>
+                            )
+                        })}
+                    </div>
+                }
             </div>
         );
     }
@@ -75,7 +118,9 @@ class LoadCharacter extends Component {
 
 const mapStateToProps = state => {
   return {
-    character: state.character
+    character: state.character,
+    settings: state.settings,
+    accountId: state.accountId
   };
 };
 

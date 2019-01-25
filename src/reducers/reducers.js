@@ -1,33 +1,29 @@
 import Spell from "../classes/spell";
-import Equipment from "../classes/equipment";
+// import Equipment from "../classes/equipment";
 const uuid = require('uuid/v4');
 
-function saveToLocalStorage(character) {
-    let local = {
-        class: character.class,
-        name: character.name,
-        level: character.level,
-        coins: character.coins,
-        experience: character.experience,
-        uid: character.uid
-    }
+// function saveToLocalStorage(character) {
+//     let local = {
+//         class: character.class,
+//         name: character.name,
+//         level: character.level,
+//         coins: character.coins,
+//         experience: character.experience,
+//         uid: character.uid
+//     }
 
-    local.spells = character.spells.map(spell => spell.properties);
-    local.equipment = character.equipment.map(equipment => equipment.properties);
-    localStorage.setItem("character", JSON.stringify(local));
-}
+//     local.spells = character.spells.map(spell => spell.properties);
+//     local.equipment = character.equipment.map(equipment => equipment.properties);
+//     localStorage.setItem("character", JSON.stringify(local));
+// }
+
+// function removeFromLocalStorage() {
+//     localStorage.removeItem("character");
+// }
 
 let rootReducer = (state, action) => {
     let newState = {...state };
-    let spells = [], equipment = [];
-
-    if(newState.character.spells.length !== 0) {
-        spells = newState.character.spells.map(spell => new Spell(spell));
-    }
-    if(newState.character.equipment.length !== 0) {
-        equipment = newState.character.equipment.map(equipment => new Equipment(equipment));
-    }
-    let newCharacter = {...newState.character, spells, equipment};
+    let newCharacter = {...newState.character};
 
     switch(action.type) {
         case "SHOW_CHARACTER_CREATION":
@@ -94,7 +90,7 @@ let rootReducer = (state, action) => {
             newCharacter.experience = 0;
             newCharacter.uid = uuid();
 
-            saveToLocalStorage(newCharacter);
+            // saveToLocalStorage(newCharacter);
 
             newState.character = newCharacter;
             return newState;
@@ -113,7 +109,7 @@ let rootReducer = (state, action) => {
                 newCharacter.experience -= newState.settings.requiredExperience[newState.character.level-1];
             }
 
-            saveToLocalStorage(newCharacter);
+            // saveToLocalStorage(newCharacter);
             newState.character = newCharacter;
             return newState;
         case "UPGRADE_SPELL":
@@ -122,7 +118,7 @@ let rootReducer = (state, action) => {
                 newCharacter.coins -= action.cost;
             }
             
-            saveToLocalStorage(newCharacter);
+            // saveToLocalStorage(newCharacter);
             newState.character = newCharacter;
             return newState;
         case "PURCHASE_ITEM":
@@ -131,13 +127,13 @@ let rootReducer = (state, action) => {
                 newCharacter.coins -= action.item.cost;
             }
 
-            saveToLocalStorage(newCharacter);
+            // saveToLocalStorage(newCharacter);
             newState.character = newCharacter;
             return newState;
         case "LOAD_CHARACTER":
-            if(action.cached !== true) {
-                saveToLocalStorage(action.character);
-            }
+            // if(action.cached !== true) {
+            //     saveToLocalStorage(action.character);
+            // }
             
             newState.showCharacterCreation = false;
             newState.showCredits = false;
@@ -148,6 +144,33 @@ let rootReducer = (state, action) => {
 
             newCharacter = action.character;
             newState.character = newCharacter;
+            return newState;
+        case "RESET_CHARACTER":
+            newState.character = {
+                class: null,
+                coins: 0,
+                level: 1,
+                experience: 0,
+                spells: [],
+                equipment: [],
+                name: "",
+                uid: null
+            }
+
+            // removeFromLocalStorage();
+
+            newState.showCharacter = false;
+            newState.showIntroduction = true;
+
+            return newState;
+        case "SET_ACCOUNT_ID":
+            if(action.accountId) {
+                newState.accountId = action.accountId;
+            }
+            else {
+                newState.accountId = uuid();
+                localStorage.setItem("accountId", newState.accountId);
+            }
             return newState;
         default:
             return state;
