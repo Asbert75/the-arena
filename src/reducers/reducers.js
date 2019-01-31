@@ -32,7 +32,7 @@ function saveToDatabase(character, accountId) {
     saveableCharacter.spells = character.spells.map(spell => spell.properties);
     saveableCharacter.equipment = character.equipment.map(equipment => equipment.properties);
 
-    fetch("http://localhost:4000/characters/save", {
+    fetch("/characters/save", {
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json"

@@ -21,7 +21,7 @@ class LoadCharacter extends Component {
     }
 
     componentDidMount() {
-        fetch("http://localhost:4000/characters/get/" + this.props.accountId, {
+        fetch("/characters/get/" + this.props.accountId, {
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json"
@@ -54,7 +54,7 @@ class LoadCharacter extends Component {
     }
 
     deleteFromDatabase(uid, index) {
-        fetch("http://localhost:4000/characters/delete/" + uid, {
+        fetch("/characters/delete/" + uid, {
             method: "delete"
         })
         .then(res => {
