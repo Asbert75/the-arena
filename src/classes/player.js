@@ -34,7 +34,20 @@ class Player {
             
             let damage = Math.floor(spell.damage * this.damageModifier * randomizer);
             let healing = Math.floor(spell.healing * this.healingModifier * randomizer);
-            return [damage, healing];
+            let crit = false;
+
+            if(spellIndex === 0) {
+                this.receiveResources(this.maxResources*0.1);
+            }
+            else if(spellIndex === 1) {
+                // Secondary attack has a 10% chance to critically hit for 100% additional damage.
+                let chance = Math.random();
+                if(chance >= 0 && chance <= 0.2) {
+                    damage *= 2;
+                    crit = true;
+                }
+            }
+            return [damage, healing, crit];
         }
         return [0, 0];
     }
@@ -54,6 +67,15 @@ class Player {
         }
         else {
             this.currentHealth += healing;
+        }
+    }
+
+    receiveResources(resources) {
+        if(this.currentResources + resources >= this.maxResources) {
+            this.currentResources = this.maxResources;
+        }
+        else {
+            this.currentResources += resources;
         }
     }
 

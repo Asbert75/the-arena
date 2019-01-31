@@ -3,75 +3,12 @@ import { connect } from "react-redux";
 
 import "./character.css";
 
-import { resetCharacter } from "../../actions/actions";
+import settings from "../../states/settings";
 
 class Character extends Component {
-    constructor() {
-        super();
-
-        this.state = {
-            saved: false
-        }
-    }
-    saveToDatabase(character) {
-        let saveableCharacter = {
-            ...character,
-            accountId: this.props.accountId
-        }
-
-        saveableCharacter.spells = character.spells.map(spell => spell.properties);
-        saveableCharacter.equipment = character.equipment.map(equipment => equipment.properties);
-
-        fetch("/characters/save", {
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json"
-            },
-            method: "post",
-            body: JSON.stringify(saveableCharacter)
-        }).then(res => {
-            res.json()
-            .then(res => {
-                // localStorage.setItem("character", saveableCharacter);
-                this.setState({ saved: true }, () => setTimeout(() => { this.setState({ saved: false })}, 3000));
-                console.log(res)
-            })
-            .catch(err => {
-                console.log(err)
-            });
-        })
-        .catch(err => {
-            console.log(err);
-        });
-    }
-
-    deleteFromDatabase(uid) {
-        fetch("/characters/delete/" + uid, {
-            method: "delete"
-        })
-        .then(res => {
-            res.json()
-            .then(res => {
-                this.props.dispatch(resetCharacter());
-                console.log(res)
-            })
-            .catch(err => {
-                console.log(err);
-            });
-        })
-        .catch(err => {
-            console.log(err);
-        });
-    }
-
   render() {
     return (
         <div id="character">
-            {this.state.saved && <h5 className="saved">Character data saved!</h5>}
-            <div className="btns">
-                <button className="save" onClick={() => this.saveToDatabase(this.props.character)}></button>
-                <button className="delete" onClick={() => this.deleteFromDatabase(this.props.character.uid)}></button>
-            </div>
             <div className="class">
                 <h3>{this.props.character.name}</h3>
                 <div className="classframe">
@@ -85,11 +22,11 @@ class Character extends Component {
             <div className="stats">
                 <div>
                     <h5>Health</h5>
-                    <p>{Math.round(this.props.character.equipment.reduce((previous, current) => previous * current.healthModifier, 1) * this.props.character.class.healthModifier * this.props.settings.baseHealthPerLevel[this.props.character.level-1])}</p>
+                    <p>{Math.round(this.props.character.equipment.reduce((previous, current) => previous * current.healthModifier, 1) * this.props.character.class.healthModifier * settings.baseHealthPerLevel[this.props.character.level-1])}</p>
                 </div>
                 <div>
                     <h5>{this.props.character.class.resourceType}</h5>
-                    <p>{Math.round(this.props.character.equipment.reduce((previous, current) => previous * current.resourceModifier, 1) * this.props.character.class.resourceModifier * this.props.settings.baseResourcesPerLevel[this.props.character.level-1])}</p>
+                    <p>{Math.round(this.props.character.equipment.reduce((previous, current) => previous * current.resourceModifier, 1) * this.props.character.class.resourceModifier * settings.baseResourcesPerLevel[this.props.character.level-1])}</p>
                 </div>
                 <div>
                     <h5>Damage</h5>
@@ -118,6 +55,7 @@ class Character extends Component {
                                 <p>Rank {spell.rank}</p>
                             </div>
                             <p>{spell.description}</p>
+                            {spell.secondaryDescription && <p className="secondaryDescription">{spell.secondaryDescription}</p>}
                         </div>
                         <div className="spellRanks">
                             {spell.rankModifier.map((modifier, index) => <div key={index} className={spell.rank > index ? "learned": "notLearned"}></div>)}
@@ -153,7 +91,6 @@ class Character extends Component {
 const mapStateToProps = state => {
   return {
     character: state.character,
-    settings: state.settings,
     accountId: state.accountId
   };
 };

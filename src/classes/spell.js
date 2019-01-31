@@ -4,6 +4,7 @@ class Spell {
         this._name = spell.name;
         this._icon = spell.icon;
         this._description = spell.description;
+        this._secondaryDescription = spell.secondaryDescription;
         this._resourceCost = spell.resourceCost;
         this._baseDamage = spell.baseDamage;
         this._baseHealing = spell.baseHealing;
@@ -17,6 +18,7 @@ class Spell {
             name: this._name,
             icon: this._icon,
             description: this._description,
+            secondaryDescription: this._secondaryDescription,
             resourceCost: this._resourceCost,
             baseDamage: this._baseDamage,
             baseHealing: this._baseHealing,
@@ -50,6 +52,10 @@ class Spell {
         description = description.replace(/\[d\]/g, `${Math.floor(this.damage*0.9)}-${Math.floor(this.damage*1.1)}`);
         description = description.replace(/\[h\]/g, `${Math.floor(this.healing*0.9)}-${Math.floor(this.healing*1.1)}`);
         return description;
+    }
+
+    get secondaryDescription() {
+        return this._secondaryDescription;
     }
 
     get damage() {

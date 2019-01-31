@@ -1,152 +1,120 @@
+import {combineReducers} from 'redux';
 import Spell from "../classes/spell";
+import settings from "../states/settings";
 // import Equipment from "../classes/equipment";
 const uuid = require('uuid/v4');
 
-// function saveToLocalStorage(character) {
-//     let local = {
-//         class: character.class,
-//         name: character.name,
-//         level: character.level,
-//         coins: character.coins,
-//         experience: character.experience,
-//         uid: character.uid
-//     }
+function saveToLocalStorage(character) {
+    let local = {
+        class: character.class,
+        name: character.name,
+        level: character.level,
+        coins: character.coins,
+        experience: character.experience,
+        uid: character.uid
+    }
 
-//     local.spells = character.spells.map(spell => spell.properties);
-//     local.equipment = character.equipment.map(equipment => equipment.properties);
-//     localStorage.setItem("character", JSON.stringify(local));
-// }
+    local.spells = character.spells.map(spell => spell.properties);
+    local.equipment = character.equipment.map(equipment => equipment.properties);
+    localStorage.setItem("character", JSON.stringify(local));
+}
 
-// function removeFromLocalStorage() {
-//     localStorage.removeItem("character");
-// }
+function removeFromLocalStorage() {
+    localStorage.removeItem("character");
+}
 
-let rootReducer = (state, action) => {
-    let newState = {...state };
-    let newCharacter = {...newState.character};
+function saveToDatabase(character, accountId) {
+    let saveableCharacter = {
+        ...character,
+        accountId
+    }
+
+    saveableCharacter.spells = character.spells.map(spell => spell.properties);
+    saveableCharacter.equipment = character.equipment.map(equipment => equipment.properties);
+
+    fetch("http://localhost:4000/characters/save", {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: "post",
+        body: JSON.stringify(saveableCharacter)
+    }).then(res => {
+        res.json()
+        .then(res => {
+            console.log(res)
+        })
+        .catch(err => {
+            console.log(err)
+        });
+    })
+    .catch(err => {
+        console.log(err);
+    });
+}
+
+let characterReducer = (state={}, action) => {
+    let newState = {...state};
 
     switch(action.type) {
-        case "SHOW_CHARACTER_CREATION":
-            newState.showCharacterCreation = true;
-            newState.showCredits = false;
-            newState.showArena = false;
-            newState.showStore = false;
-            newState.showCharacter = false;
-            newState.showIntroduction = false;
-
-            newState.refresh = !newState.refresh;
-
-            return newState;
-        case "SHOW_CREDITS":
-            newState.showCharacterCreation = false;
-            newState.showCredits = true;
-            newState.showArena = false;
-            newState.showStore = false;
-            newState.showCharacter = false;
-            newState.showIntroduction = false;
-            
-            return newState;
-        case "SHOW_ARENA":
-            newState.showCharacterCreation = false;
-            newState.showCredits = false;
-            newState.showArena = true;
-            newState.showStore = false;
-            newState.showCharacter = false;
-            newState.showIntroduction = false;
-            
-            return newState;
-        case "SHOW_STORE":
-            newState.showCharacterCreation = false;
-            newState.showCredits = false;
-            newState.showArena = false;
-            newState.showStore = true;
-            newState.showCharacter = false;
-            newState.showIntroduction = false;
-            
-            return newState;
-        case "SHOW_CHARACTER":
-            newState.showCharacterCreation = false;
-            newState.showCredits = false;
-            newState.showArena = false;
-            newState.showStore = false;
-            newState.showCharacter = true;
-            newState.showIntroduction = false;
-            
-            return newState;
         case "SET_CLASS":
-            newState.showCharacterCreation = false;
-            newState.showCredits = false;
-            newState.showArena = false;
-            newState.showStore = false;
-            newState.showCharacter = true;
-            newState.showIntroduction = false;
+            newState.class = action.selectedClass;
+            newState.spells = action.spells;
+            newState.equipment = [];
+            newState.name = action.name;
+            newState.level = 1;
+            newState.coins = 0;
+            newState.experience = 0;
+            newState.uid = uuid();
 
-            newCharacter.class = action.selectedClass;
-            newCharacter.spells = action.spells;
-            newCharacter.equipment = [];
-            newCharacter.name = action.name;
-            newCharacter.level = 1;
-            newCharacter.coins = 0;
-            newCharacter.experience = 0;
-            newCharacter.uid = uuid();
-
-            // saveToLocalStorage(newCharacter);
-
-            newState.character = newCharacter;
+            saveToLocalStorage(newState);
+            saveToDatabase(newState, action.accountId);
             return newState;
         case "GIVE_LOOT":
-            newCharacter.experience += action.experience;
-            newCharacter.coins += action.coins;
+            newState.experience += action.experience;
+            newState.coins += action.coins;
 
-            if(newCharacter.level === 15) {
-                newCharacter.experience = 0;
+            if(newState.level === 15) {
+                newState.experience = 0;
             }
-            else if(newCharacter.experience > newState.settings.requiredExperience[newState.character.level-1]) {
-                newCharacter.level += 1;
-                if(newCharacter.level === 15) {
-                    newCharacter.experience = 0;
+            else if(newState.experience > settings.requiredExperience[newState.level-1]) {
+                newState.level += 1;
+                if(newState.level === 15) {
+                    newState.experience = 0;
                 }
-                newCharacter.experience -= newState.settings.requiredExperience[newState.character.level-1];
+                newState.experience -= settings.requiredExperience[newState.level-2];
             }
 
-            // saveToLocalStorage(newCharacter);
-            newState.character = newCharacter;
+            saveToLocalStorage(newState);
+            saveToDatabase(newState, action.accountId);
             return newState;
         case "UPGRADE_SPELL":
-            if(newCharacter.coins >= action.cost) {
-                newCharacter.spells[action.spellIndex] = new Spell(action.newSpell);
-                newCharacter.coins -= action.cost;
+            if(newState.coins >= action.cost) {
+                newState.spells[action.spellIndex] = new Spell(action.newSpell);
+                newState.coins -= action.cost;
             }
             
-            // saveToLocalStorage(newCharacter);
-            newState.character = newCharacter;
+            saveToLocalStorage(newState);
+            saveToDatabase(newState, action.accountId);
             return newState;
         case "PURCHASE_ITEM":
-            if(newCharacter.coins >= action.item.cost) {
-                newCharacter.equipment.push(action.item);
-                newCharacter.coins -= action.item.cost;
+            if(newState.coins >= action.item.cost) {
+                newState.equipment.push(action.item);
+                newState.coins -= action.item.cost;
             }
 
-            // saveToLocalStorage(newCharacter);
-            newState.character = newCharacter;
+            saveToLocalStorage(newState);
+            saveToDatabase(newState, action.accountId);
             return newState;
         case "LOAD_CHARACTER":
-            // if(action.cached !== true) {
-            //     saveToLocalStorage(action.character);
-            // }
-            
-            newState.showCharacterCreation = false;
-            newState.showCredits = false;
-            newState.showArena = false;
-            newState.showStore = false;
-            newState.showCharacter = true;
-            newState.showIntroduction = false;
+            if(action.cached !== true) {
+                saveToLocalStorage(action.character);
+            }
 
-            newCharacter = action.character;
-            newState.character = newCharacter;
+            newState = action.character;
             return newState;
         case "RESET_CHARACTER":
-            newState.character = {
+            newState = {
                 class: null,
                 coins: 0,
                 level: 1,
@@ -157,24 +125,73 @@ let rootReducer = (state, action) => {
                 uid: null
             }
 
-            // removeFromLocalStorage();
-
-            newState.showCharacter = false;
-            newState.showIntroduction = true;
-
-            return newState;
-        case "SET_ACCOUNT_ID":
-            if(action.accountId) {
-                newState.accountId = action.accountId;
-            }
-            else {
-                newState.accountId = uuid();
-                localStorage.setItem("accountId", newState.accountId);
-            }
+            removeFromLocalStorage();
             return newState;
         default:
             return state;
     }
 }
+
+let navigationReducer = (state={}, action) => {
+    let newState = {
+        showCharacterCreation: false,
+        showCredits: false,
+        showArena: false,
+        showCharacter: false,
+        showIntroduction: false,
+        refresh: !state.refresh
+    };
+
+    switch(action.type) {
+        case "SHOW_CHARACTER_CREATION":
+            newState.showCharacterCreation = true;
+            return newState;
+        case "SHOW_CREDITS":
+            newState.showCredits = true;
+            return newState;
+        case "SHOW_ARENA":
+            newState.showArena = true;        
+            return newState;
+        case "SHOW_STORE":
+            newState.showStore = true;      
+            return newState;
+        case "SHOW_CHARACTER":
+            newState.showCharacter = true;            
+            return newState;
+        case "RESET_CHARACTER":
+            newState.showIntroduction = true;
+            return newState;
+        case "LOAD_CHARACTER":
+            newState.showCharacter = true;
+            return newState;
+        case "SET_CLASS":
+            newState.showCharacter = true;
+            return newState;
+        default:
+            return state;
+    }
+}
+
+let accountReducer = (state="", action) => {
+    switch(action.type) {
+        case "SET_ACCOUNT_ID":
+            if(action.accountId) {
+                state = action.accountId;
+            }
+            else {
+                state = uuid();
+                localStorage.setItem("accountId", state);
+            }
+            return state;
+        default:
+            return state;
+    }
+}
+
+let rootReducer = combineReducers({
+    character: characterReducer,
+    navigation: navigationReducer,
+    accountId: accountReducer
+});
 
 export default rootReducer;

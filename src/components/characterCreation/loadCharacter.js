@@ -2,10 +2,12 @@ import React, { Component } from "react";
 import "./loadCharacter.css";
 
 import { connect } from "react-redux";
-import { loadCharacter } from "../../actions/actions";
+import { loadCharacter, resetCharacter } from "../../actions/actions";
 
 import Spell from "../../classes/spell";
 import Equipment from "../../classes/equipment";
+
+import settings from "../../states/settings";
 
 class LoadCharacter extends Component {
     constructor() {
@@ -19,7 +21,7 @@ class LoadCharacter extends Component {
     }
 
     componentDidMount() {
-        fetch("/characters/get/" + this.props.accountId, {
+        fetch("http://localhost:4000/characters/get/" + this.props.accountId, {
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json"
@@ -51,6 +53,32 @@ class LoadCharacter extends Component {
         });
     }
 
+    deleteFromDatabase(uid, index) {
+        fetch("http://localhost:4000/characters/delete/" + uid, {
+            method: "delete"
+        })
+        .then(res => {
+            res.json()
+            .then(res => {
+                if(uid === this.props.character.uid) {
+                    this.props.dispatch(resetCharacter());
+                }
+                else {
+                    let newCharacters = [...this.state.characters];
+                    newCharacters.splice(index, 1);
+                    this.setState({ characters: newCharacters });
+                }
+                console.log(res)
+            })
+            .catch(err => {
+                console.log(err);
+            });
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    }
+
     render() {
         return (
             <div id="loadCharacter">
@@ -59,7 +87,7 @@ class LoadCharacter extends Component {
                 {this.state.status && <p>{this.state.status}</p>}
                 {this.state.characters.length > 0 && 
                     <div className="characters">
-                        {this.state.characters.map(character => {
+                        {this.state.characters.map((character, index) => {
                             return (
                                 <div className="character" key={character.uid}>
                                     <div>
@@ -77,11 +105,11 @@ class LoadCharacter extends Component {
                                         <div className="stats">
                                             <div>
                                                 <h5>Health</h5>
-                                                <p>{Math.round(character.equipment.reduce((previous, current) => previous * current.healthModifier, 1) * character.class.healthModifier * this.props.settings.baseHealthPerLevel[character.level-1])}</p>
+                                                <p>{Math.round(character.equipment.reduce((previous, current) => previous * current.healthModifier, 1) * character.class.healthModifier * settings.baseHealthPerLevel[character.level-1])}</p>
                                             </div>
                                             <div>
                                                 <h5>{character.class.resourceType}</h5>
-                                                <p>{Math.round(character.equipment.reduce((previous, current) => previous * current.resourceModifier, 1) * character.class.resourceModifier * this.props.settings.baseResourcesPerLevel[character.level-1])}</p>
+                                                <p>{Math.round(character.equipment.reduce((previous, current) => previous * current.resourceModifier, 1) * character.class.resourceModifier * settings.baseResourcesPerLevel[character.level-1])}</p>
                                             </div>
                                             <div>
                                                 <h5>Damage</h5>
@@ -105,7 +133,10 @@ class LoadCharacter extends Component {
                                             })}
                                         </div>
                                     </div>
-                                    <button className="load" onClick={() => this.props.dispatch(loadCharacter(character))}></button>
+                                    <div className="actionButtons">
+                                        <button className="load" onClick={() => this.props.dispatch(loadCharacter(character))}></button>
+                                        <button className="delete" onClick={() => this.deleteFromDatabase(character.uid, index)}></button>
+                                    </div>
                                 </div>
                             )
                         })}
@@ -119,7 +150,6 @@ class LoadCharacter extends Component {
 const mapStateToProps = state => {
   return {
     character: state.character,
-    settings: state.settings,
     accountId: state.accountId
   };
 };

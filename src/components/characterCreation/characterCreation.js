@@ -44,8 +44,7 @@ const mapStateToProps = state => {
   return {
     classes: state.classes,
     spells: state.spells,
-    settings: state.settings,
-    refresh: state.refresh,
+    refresh: state.navigation.refresh,
   };
 };
 

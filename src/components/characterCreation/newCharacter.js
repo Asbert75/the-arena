@@ -30,13 +30,16 @@ class NewCharacter extends Component {
 
     selectClass(selectedClass) {
         let spells = this.getAvailableSpells(selectedClass.spells);
-        this.props.dispatch(setClass(selectedClass, spells, this.state.characterName));
+        this.props.dispatch(setClass(selectedClass, spells, this.state.characterName, this.props.accountId));
     }
 
     handleNameChange(event) {
         let reg = /^[a-z]+$/i;
         let name = event.target.value;
-        if(name.match(reg)) {
+        if(name.length < 2) {
+            this.setState({ nameError: true});
+        }
+        else if(name.match(reg)) {
             this.setState({ characterName: name, nameError: false });
         }
         else {
@@ -108,15 +111,15 @@ class NewCharacter extends Component {
                                 </div>
                                 <p>Rank {spell.rank}</p>
                             </div>
-                            <p>
-                                {spell.description}
-                            </p>
+                            <p>{spell.description}</p>
+                            {spell.secondaryDescription && <p className="secondaryDescription">{spell.secondaryDescription}</p>}
                         </div>
                     </div>
                 ))}
                 </div>
                 <div className="selectBtnContainer">
-                    <button className="selectBtn" onClick={() => this.selectClass(currentClass)} disabled={this.state.characterName.length < 2}></button>
+                    <button className="selectBtn" onClick={() => this.selectClass(currentClass)} disabled={(this.state.nameError || this.state.characterName.length < 2)}></button>
+                    {(this.state.nameError || this.state.characterName.length < 2) && <p className="nameError">You must choose a valid name to continue.</p>}
                 </div>
             </div>
             ))}
@@ -128,7 +131,7 @@ class NewCharacter extends Component {
 
 const mapStateToProps = state => {
   return {
-    settings: state.settings
+    accountId: state.accountId
   };
 };
 

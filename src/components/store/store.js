@@ -65,7 +65,7 @@ class Store extends Component {
                                 </div>
                                 <button className="buyBtn" onClick={() => {
                                     if(!this.characterHasItem(item)) {
-                                        this.props.dispatch(purchaseItem(item));
+                                        this.props.dispatch(purchaseItem(item, this.props.accountId));
                                 }}}></button>
                             </div>
                         </div>)
@@ -95,15 +95,16 @@ class Store extends Component {
                                     <h4>{storeSpell.name}</h4>
                                 </div>
                                 <p className="description">{spell.rank === 3 ? "You have already upgraded this spell to the highest rank.": storeSpell.description}</p>
+                                {storeSpell.secondaryDescription && <p className="secondaryDescription">{storeSpell.secondaryDescription}</p>}
                             </div>
                             <div className={this.props.character.coins < (100*storeSpell.rank) ? "buyItem disabled" : "buyItem"}>
                                 <div className="itemInfo">
-                                    { spell.rank === 3 ? <p>Max Rank</p> : <p>Rank {storeSpell.rank} / 3</p> }
+                                    { spell.rank === 3 ? <p>Max Rank</p> : <p>Buy Rank {storeSpell.rank} / 3</p> }
                                     <h5 className="coinContainer">Cost: <img className="coin" src="/images/icons/coin.png" alt=""/> <span className={this.props.character.coins < (100*storeSpell.rank) ? "lowCoins" : null}>{100*(storeSpell.rank)}</span></h5>
                                 </div>
                                 <button className="upgradeBtn" onClick={() => {
                                     if(spell.rank < 3) {
-                                        this.props.dispatch(upgradeSpell(index, (100*storeSpell.rank), storeSpell.properties));
+                                        this.props.dispatch(upgradeSpell(index, (100*storeSpell.rank), storeSpell.properties, this.props.accountId));
                                     }
                                 }}></button>
                             </div>
@@ -120,7 +121,8 @@ const mapStateToProps = state => {
   return {
     character: state.character,
     equipment: state.equipment,
-    spells: state.spells
+    spells: state.spells,
+    accountId: state.accountId
   };
 };
 

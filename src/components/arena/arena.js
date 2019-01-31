@@ -5,6 +5,7 @@ import Player from "../../classes/player";
 import Enemy from "../../classes/enemy";
 
 import enemies from "../../states/enemies";
+import settings from "../../states/settings";
 
 import "./arena.css";
 import { giveLoot } from "../../actions/actions";
@@ -29,9 +30,9 @@ class Arena extends Component {
     }
 
     startArena() {
-        let enemy = new Enemy(enemies[this.state.arenaLevel-1], this.props.settings.baseHealthPerLevel);
-        let player = new Player(this.props.character, this.props.settings.baseHealthPerLevel, 
-            this.props.settings.baseResourcesPerLevel, this.props.settings.requiredExperience[this.props.character.level-1]);
+        let enemy = new Enemy(enemies[this.state.arenaLevel-1], settings.baseHealthPerLevel);
+        let player = new Player(this.props.character, settings.baseHealthPerLevel, 
+            settings.baseResourcesPerLevel, settings.requiredExperience[this.props.character.level-1]);
         this.setState({ enemy, player}, () => {
             this.addSpellEventListeners();
             this.setState({ status: "INPROGRESS" });
@@ -56,7 +57,7 @@ class Arena extends Component {
             let experience = Math.floor(this.state.enemy.getLevel * 50 * ((Math.floor(Math.random() * 50) + 75) / 100));
             let coins = Math.floor(this.state.enemy.getLevel * 15 * ((Math.floor(Math.random() * 50) + 75) / 100));
             this.setState({ loot: { experience, coins }, status: "WINNER" }, () => {
-                this.props.dispatch(giveLoot(experience, coins));
+                this.props.dispatch(giveLoot(experience, coins, this.props.accountId));
             });
         }
     }
@@ -86,17 +87,18 @@ class Arena extends Component {
             let values = this.state.player.attack(index);
             let damage = values[0];
             let healing = values[1];
+            let crit = values[2];
             let actionText;
 
             if(damage > 0 && healing > 0) {
-                actionText = `Your ${this.state.player.getSpells[index].name} hit ${this.state.enemy.getName} ${damage} damage and restored 
-                ${healing} health points to you.`; 
+                actionText = `Your ${this.state.player.getSpells[index].name} hit ${this.state.enemy.getName} for ${damage} damage and restored 
+                ${healing} health points to you`;
             }
             else if(damage > 0) {
-                actionText = `Your ${this.state.player.getSpells[index].name} hit ${this.state.enemy.getName} ${damage} damage.`;
+                actionText = `Your ${this.state.player.getSpells[index].name} ${crit ? "critically" : ""} hit ${this.state.enemy.getName} for ${damage} damage`;
             }
             else if(healing > 0) {
-                actionText = `Your ${this.state.player.getSpells[index].name} healed you ${healing} health points.`;
+                actionText = `Your ${this.state.player.getSpells[index].name} healed you ${healing} health points`;
             }
             else {
                 return;
@@ -120,7 +122,7 @@ class Arena extends Component {
         }
         else if(this.state.status === "INPROGRESS") {
             let damage = this.state.enemy.attack()[0];
-            let actionText = `${this.state.enemy.getName} hit you for ${damage} damage.`;
+            let actionText = `${this.state.enemy.getName} hit you for ${damage} damage`;
 
             this.state.player.receiveAttack(damage);
 
@@ -272,6 +274,7 @@ class Arena extends Component {
                                         <p>Rank {spell.rank}</p>
                                     </div>
                                     <p>{spell.description}</p>
+                                    {spell.secondaryDescription && <p className="secondaryDescription">{spell.secondaryDescription}</p>}
                                 </div>
                             </div>
                             )}
@@ -298,14 +301,23 @@ class Arena extends Component {
                             <img className="frame" src={"/images/resourceframe/bar_frame.png"} alt="" />
                             <div style={{width: (this.state.player.getRemainingResourcesPercentage * 4.94) + "px"}} className={"frame_filler_" + this.state.player.getResourceType.toLowerCase()}></div>
                         </div>
-                        <div className="resourcebar">
+                        {/* <div className="resourcebar">
                             <div className="playerExp">
                                 {this.state.player.getLevel === 15 && <p>Max Level</p>}
                                 {this.state.player.getLevel < 15 && <p>{this.state.player.getExperience}/{this.state.player.getExperienceToNextLevel} Experience</p>}
                                 {this.state.player.getLevel < 15 && <p>{this.state.player.getExperienceToNextLevel - this.state.player.getExperience} exp to level {this.state.player.getLevel + 1}</p>}
                             </div>
                             <img className="frame" src={"/images/resourceframe/bar_frame.png"} alt="" />
-                            {this.state.player.getLevel < 15 && <div style={{width: ((this.state.player.getExperience/this.props.settings.requiredExperience[this.state.player.getLevel-1]) * 494) + "px"}} className="frame_filler_experience"></div>}
+                            {this.state.player.getLevel < 15 && <div style={{width: ((this.state.player.getExperience/settings.requiredExperience[this.state.player.getLevel-1]) * 494) + "px"}} className="frame_filler_experience"></div>}
+                        </div> */}
+                        <div className="resourcebar">
+                            <div className="playerExp">
+                                {this.props.character.level === 15 && <p>Max Level</p>}
+                                {this.props.character.level < 15 && <p>{this.props.character.experience}/{settings.requiredExperience[this.props.character.level-1]} Experience</p>}
+                                {this.props.character.level < 15 && <p>{settings.requiredExperience[this.props.character.level-1] - this.props.character.experience} exp to level {this.props.character.level + 1}</p>}
+                            </div>
+                            <img className="frame" src={"/images/resourceframe/bar_frame.png"} alt="" />
+                            {this.props.character.level < 15 && <div style={{width: ((this.props.character.experience/settings.requiredExperience[this.props.character.level-1]) * 494) + "px"}} className="frame_filler_experience"></div>}
                         </div>
                     </div>
                 </React.Fragment>}
@@ -316,10 +328,8 @@ class Arena extends Component {
 
 const mapStateToProps = state => {
   return {
-    character: state.character,
-    settings: state.settings,
-    enemies: state.enemies,
-    state: state
+    accountId: state.accountId,
+    character: state.character
   };
 };
 

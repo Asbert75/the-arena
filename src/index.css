@@ -75,6 +75,10 @@ p {
     font-size: 12px;
 }
 
+.secondaryDescription {
+    margin-top: 5px;
+}
+
 .spellDescription > p {
     font-size: 12px;
 }

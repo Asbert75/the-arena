@@ -11,19 +11,19 @@ class Navigation extends Component {
       <div id="navigation">
         <img className="logo" src={"/images/arena2.png"} alt="" />
         <ul>
-          <li className={ this.props.showCharacterCreation ? "active" : null }>
+          <li className={ this.props.navigation.showCharacterCreation ? "active" : null }>
             <button onClick={() => this.props.dispatch(showCharacterCreation())}>Characters</button>
           </li>
-          <li className={ this.props.showCharacter ? "active" : null }>
+          <li className={ this.props.navigation.showCharacter ? "active" : null }>
             <button onClick={() => this.props.dispatch(showCharacter())} disabled={this.props.characterClass === null}>My Character</button>
           </li>
-          <li className={ this.props.showArena ? "active" : null }>
+          <li className={ this.props.navigation.showArena ? "active" : null }>
             <button onClick={() => this.props.dispatch(showArena())} disabled={this.props.characterClass === null}>Into The Arena</button>
           </li>
-          <li className={ this.props.showStore ? "active" : null }>
+          <li className={ this.props.navigation.showStore ? "active" : null }>
             <button onClick={() => this.props.dispatch(showStore())} disabled={this.props.characterClass === null}>Store</button>
           </li>
-          <li className={ this.props.showCredits ? "active" : null }>
+          <li className={ this.props.navigation.showCredits ? "active" : null }>
             <button onClick={() => this.props.dispatch(showCredits())}>Credits</button>
           </li>
         </ul>
@@ -34,11 +34,7 @@ class Navigation extends Component {
 
 const mapStateToProps = state => {
   return {
-    showCharacterCreation: state.showCharacterCreation,
-    showCredits: state.showCredits,
-    showArena: state.showArena,
-    showStore: state.showStore,
-    showCharacter: state.showCharacter, 
+    navigation: state.navigation,
     characterClass: state.character.class
   };
 };

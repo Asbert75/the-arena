@@ -28,36 +28,40 @@ let showCharacter = () => {
     }
 }
 
-let setClass = (selectedClass, spells, name) => {
+let setClass = (selectedClass, spells, name, accountId) => {
     return {
         type: "SET_CLASS",
         selectedClass,
         spells,
-        name
+        name,
+        accountId
     }
 }
 
-let giveLoot = (experience, coins) => {
+let giveLoot = (experience, coins, accountId) => {
     return {
         type: "GIVE_LOOT",
         experience,
-        coins
+        coins,
+        accountId
     }
 }
 
-let upgradeSpell = (spellIndex, cost, newSpell) => {
+let upgradeSpell = (spellIndex, cost, newSpell, accountId) => {
     return {
         type: "UPGRADE_SPELL",
         spellIndex,
         cost,
-        newSpell
+        newSpell,
+        accountId
     }
 }
 
-let purchaseItem = (item) => {
+let purchaseItem = (item, accountId) => {
     return {
         type: "PURCHASE_ITEM",
-        item
+        item,
+        accountId
     }
 }
 

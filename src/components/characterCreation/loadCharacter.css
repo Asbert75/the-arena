@@ -101,3 +101,13 @@
     margin-bottom: 5px;
     background-image: url('../../images/load_character.png');
 }
+
+#loadCharacter .delete {
+    margin-top: 5px;
+    background-image: url('../../images/delete_character.png');
+}
+
+#loadCharacter .actionButtons {
+    display: flex;
+    flex-direction: column;
+}

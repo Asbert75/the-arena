@@ -39,18 +39,18 @@ class App extends Component {
         }
     }
 
-    // getCachedCharacter() {
-    //     let cachedCharacter = JSON.parse(localStorage.getItem("character"));
-    //     if(cachedCharacter) {
-    //         cachedCharacter.spells = cachedCharacter.spells.map(spell => new Spell(spell));
-    //         cachedCharacter.equipment = cachedCharacter.equipment.map(equipment => new Equipment(equipment));
-    //         this.props.dispatch(loadCharacter(cachedCharacter, true));
-    //     }
-    // }
+    getCachedCharacter() {
+        let cachedCharacter = JSON.parse(localStorage.getItem("character"));
+        if(cachedCharacter) {
+            cachedCharacter.spells = cachedCharacter.spells.map(spell => new Spell(spell));
+            cachedCharacter.equipment = cachedCharacter.equipment.map(equipment => new Equipment(equipment));
+            this.props.dispatch(loadCharacter(cachedCharacter, true));
+        }
+    }
 
     componentDidMount() {
         if(this.storageAvailable('localStorage')) {
-            // this.getCachedCharacter();
+            this.getCachedCharacter();
 
             let accountId = localStorage.getItem("accountId");
             if(!accountId) {
@@ -60,19 +60,13 @@ class App extends Component {
                 this.props.dispatch(setAccountId(accountId));
             }
         }
-
-        window.addEventListener("keydown", (event) => {
-            if(event.key === "a") {
-                console.log(this.props.state);
-            }
-        });
     }
 
     render() {
         return (
             <div id="app">
                 <Navigation />
-                { this.props.showIntroduction && (
+                { this.props.navigation.showIntroduction && (
                     <div className="introduction">
                         <h2>Welcome, adventurer!</h2>
                         <p>
@@ -90,11 +84,11 @@ class App extends Component {
                         </div>
                     </div>
                 )}
-                { this.props.showCharacterCreation && <CharacterCreation /> }
-                { this.props.showCredits && <Credits /> }
-                { this.props.showCharacter && <Character /> }
-                { this.props.showArena && <Arena /> }
-                { this.props.showStore && <Store /> }
+                { this.props.navigation.showCharacterCreation && <CharacterCreation /> }
+                { this.props.navigation.showCredits && <Credits /> }
+                { this.props.navigation.showCharacter && <Character /> }
+                { this.props.navigation.showArena && <Arena /> }
+                { this.props.navigation.showStore && <Store /> }
             </div>
         );
     }
@@ -102,14 +96,8 @@ class App extends Component {
 
 const mapStateToProps = state => {
   return {
-    showCharacterCreation: state.showCharacterCreation,
-    showCredits: state.showCredits,
-    showArena: state.showArena,
-    showStore: state.showStore,
-    showCharacter: state.showCharacter,
-    showIntroduction: state.showIntroduction,
-    character: state.character,
-    state: state
+    navigation: state.navigation,
+    character: state.character
   };
 };
 

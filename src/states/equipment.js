@@ -46,7 +46,7 @@ const equipment = [
         healingModifier: 1,
         cost: 200,
         requiredLevel: 4,
-        availableClasses: [0, 1, 2, 3]
+        availableClasses: [0, 1, 2]
     }, {
         id: 4,
         name: "Bulwark",
@@ -94,7 +94,7 @@ const equipment = [
         healingModifier: 1.25,
         cost: 500,
         requiredLevel: 8,
-        availableClasses: [3, 4]
+        availableClasses: [1, 2, 3]
     }, {
         id: 8,
         name: "Signet of Death",
@@ -106,7 +106,7 @@ const equipment = [
         healingModifier: 1,
         cost: 700,
         requiredLevel: 10,
-        availableClasses: [0, 1, 2, 3]
+        availableClasses: [0, 1, 2]
     }, {
         id: 9,
         name: "Tribal Pendant",
@@ -118,7 +118,7 @@ const equipment = [
         healingModifier: 1.6,
         cost: 700,
         requiredLevel: 10,
-        availableClasses: [0, 1, 2, 3]
+        availableClasses: [0, 2]
     }
 ];
 
