@@ -21,7 +21,7 @@ class LoadCharacter extends Component {
     }
 
     componentDidMount() {
-        fetch("/characters/get/" + this.props.accountId, {
+        fetch("http://localhost:4000/characters/get/" + this.props.accountId, {
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json"

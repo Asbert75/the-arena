@@ -10,7 +10,7 @@ class Character extends Component {
     return (
         <div id="character">
             <div className="class">
-                <h3>{this.props.character.name}</h3>
+                <h3>{this.props.character.champion && "Beastslayer "}{this.props.character.name}</h3>
                 <div className="classframe">
                     <img className="frame" src={"/images/classframe/classframe.png"} alt="" />
                     <img className="frame_active" src={"/images/classframe/classframe_active.png"} alt="" />

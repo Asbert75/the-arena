@@ -33,6 +33,20 @@ app.post("/characters/save", (req, res) => {
     });
 });
 
+app.get("/champions", (req, res) => {
+    database.getChampions((characters) => {
+        res.send(characters);
+    });
+});
+
+app.post("/champions/save", (req, res) => {
+    let data = req.body;
+
+    database.saveChampion(data, () => {
+        res.send({"status": "Champion added"});
+    });
+});
+
 app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, '..', 'build', 'index.html'));
 });

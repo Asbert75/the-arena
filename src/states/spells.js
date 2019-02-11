@@ -4,7 +4,7 @@ const spells = [
         name: "Attack",
         icon: "icons/spells/attack.png",
         description: "Attack your enemy for [d] damage.",
-        secondaryDescription: "Also restores 10% of your maximum resources.",
+        secondaryDescription: "Also restores 10% of your maximum energy/mana.",
         resourceCost: 0,
         baseDamage: 15,
         baseHealing: 0,
@@ -27,7 +27,7 @@ const spells = [
         icon: "icons/spells/charged_arrow.png",
         description: "Launches a charged arrow at your enemy, dealing [d] damage.",
         secondaryDescription: null,
-        resourceCost: 30,
+        resourceCost: 25,
         baseDamage: 35,
         baseHealing: 0,
         rank: 1,
@@ -38,7 +38,7 @@ const spells = [
         icon: "icons/spells/piercing_shot.png",
         description: "An extremely strong arrow pierces your enemy, instantly dealing [d] damage.",
         secondaryDescription: "Has a 20% chance to deal 100% increased damage.",
-        resourceCost: 10,
+        resourceCost: 15,
         baseDamage: 25,
         baseHealing: 0,
         rank: 1,
@@ -49,7 +49,7 @@ const spells = [
         icon: "icons/spells/quick_strike.png",
         description: "A quick attack that deals [d] damage.",
         secondaryDescription: "Has a 20% chance to deal 100% increased damage.",
-        resourceCost: 10,
+        resourceCost: 15,
         baseDamage: 20,
         baseHealing: 0,
         rank: 1,
@@ -60,7 +60,7 @@ const spells = [
         icon: "icons/spells/skull_bash.png",
         description: "A brutal slam that deals [d] damage.",
         secondaryDescription: null,
-        resourceCost: 35,
+        resourceCost: 30,
         baseDamage: 30,
         baseHealing: 0,
         rank: 1,
@@ -106,7 +106,7 @@ const spells = [
         secondaryDescription: null,
         resourceCost: 60,
         baseDamage: 20,
-        baseHealing: 20,
+        baseHealing: 15,
         rank: 1,
         rankModifier: [1, 1.55, 2.25]
     }, {
@@ -119,7 +119,7 @@ const spells = [
         baseDamage: 0,
         baseHealing: 20,
         rank: 1,
-        rankModifier: [1, 2.5, 4.5]
+        rankModifier: [1, 2.5, 3.5]
     }
 ];
 

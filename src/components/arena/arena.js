@@ -8,7 +8,7 @@ import enemies from "../../states/enemies";
 import settings from "../../states/settings";
 
 import "./arena.css";
-import { giveLoot } from "../../actions/actions";
+import { giveLoot, setChampion } from "../../actions/actions";
 
 class Arena extends Component {
     constructor() {
@@ -27,6 +27,9 @@ class Arena extends Component {
                 coins: 0
             }
         };
+
+        this.handleKeyDown = this.handleKeyDown.bind(this);
+        this.handleKeyUp = this.handleKeyUp.bind(this);
     }
 
     startArena() {
@@ -53,11 +56,15 @@ class Arena extends Component {
     }
 
     distributeLoot() {
+        let accountId = this.props.accountId;
         if(this.state.loot.experience === 0 && this.state.loot.coins === 0) { 
             let experience = Math.floor(this.state.enemy.getLevel * 50 * ((Math.floor(Math.random() * 50) + 75) / 100));
             let coins = Math.floor(this.state.enemy.getLevel * 15 * ((Math.floor(Math.random() * 50) + 75) / 100));
             this.setState({ loot: { experience, coins }, status: "WINNER" }, () => {
-                this.props.dispatch(giveLoot(experience, coins, this.props.accountId));
+                this.props.dispatch(giveLoot(experience, coins, accountId));
+                if(this.state.arenaLevel === 6) {
+                    this.props.dispatch(setChampion(accountId));
+                }
             });
         }
     }
@@ -134,8 +141,8 @@ class Arena extends Component {
         }
     }
 
-    addSpellEventListeners() {
-        window.addEventListener("keydown", event => {
+    handleKeyDown(event) {
+        try {
             let container = document.getElementById("spells"); 
 
             if(event.key === "1") {
@@ -155,9 +162,14 @@ class Arena extends Component {
                 if(spell.classList.contains("disabled")) return; 
                 spell.classList.add("clicked");
             }
-        });
+        }
+        catch(err) {
+            console.log(err);
+        }
+    }
 
-        window.addEventListener("keyup", event => {
+    handleKeyUp(event) {
+        try {
             let container = document.getElementById("spells");
 
             if(event.key === "1") {
@@ -181,7 +193,24 @@ class Arena extends Component {
                 spell.classList.remove("clicked");
                 this.handlePlayerAttack(3);
             }
-        });
+        }
+        catch(err) {
+            console.log(err);
+        }
+    }
+
+    addSpellEventListeners() {
+        window.addEventListener("keydown", event => this.handleKeyDown(event));
+        window.addEventListener("keyup", event => this.handleKeyUp(event));
+    }
+
+    removeSpellEventListeners() {
+        window.removeEventListener("keydown", event => this.handleKeyDown(event));
+        window.removeEventListener("keyup", event => this.handleKeyUp(event));
+    }
+
+    componentWillUnmount() {
+        this.removeSpellEventListeners();
     }
 
     render() {
@@ -189,7 +218,7 @@ class Arena extends Component {
             <div id="arena">
                 { this.state.status === "WAITING" && 
                     <div className="introduction">
-                        <h2>The Arena</h2>
+                        <h2>THE Arena</h2>
                         <p>Welcome, {this.props.character.name}. 
                         <br/>
                         The arena consists of 6 stages. For each stage you complete you will be facing a tougher enemy. 
@@ -236,16 +265,21 @@ class Arena extends Component {
                         {!this.state.showLatestAction && this.state.status === "INPROGRESS" && <h3>It Is Your Turn!</h3>}
                         {this.state.showLatestAction && this.state.status === "INPROGRESS" && <h4>{this.state.latestAction}</h4>}
                         {this.state.status === "WINNER" && 
-                            <div>
-                                <h2>Victory</h2>
-                                <div className="loot">
-                                    <h5>Rewards</h5>
-                                    <p className="expGain">+{this.state.loot.experience} experience</p>
-                                    <p className="coinGain">+{this.state.loot.coins} <img className="coin" src="/images/icons/coin.png" alt=""/></p>
-                                </div>
-                                {this.state.arenaLevel !== 6 && <button className="continueBtn" onClick={() => this.startNextLevel()}></button>}
-                                {this.state.arenaLevel === 6 && <h3>Congratulations hero, You beat the final enemy!</h3>}
-                            </div>
+                            <React.Fragment>
+                                {this.state.arenaLevel !== 6 && <div>
+                                    <h2>Victory</h2>
+                                    <div className="loot">
+                                        <h5>Rewards</h5>
+                                        <p className="expGain">+{this.state.loot.experience} experience</p>
+                                        <p className="coinGain">+{this.state.loot.coins} <img className="coin" src="/images/icons/coin.png" alt=""/></p>
+                                    </div>
+                                    <button className="continueBtn" onClick={() => this.startNextLevel()}></button>
+                                </div>}
+                                {this.state.arenaLevel === 6 && <div>
+                                    <h3>Congratulations hero, you beat the final enemy, The Beast!</h3>
+                                    <p>You have earned the title: Beastslayer</p>
+                                </div>}
+                            </React.Fragment>
                         }
                         {this.state.status === "LOSER" && 
                             <div>
@@ -282,7 +316,7 @@ class Arena extends Component {
                         <div className="resourcebar">
                             <div className="playerInfo">
                                 <div>
-                                    <h4>{this.state.player.getName}</h4>
+                                    <h4>{this.props.character.champion && "Beastslayer "}{this.state.player.getName}</h4>
                                     <div className="playerCoins">
                                         <img className="coin" src="/images/icons/coin.png" alt=""/>
                                         <p>{this.props.character.coins}</p>

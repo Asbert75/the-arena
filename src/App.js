@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import Navigation from "./components/navigation/navigation";
 import CharacterCreation from "./components/characterCreation/characterCreation";
-import Credits from "./components/credits/credits";
+import Champions from "./components/champions/champions";
 import Character from "./components/character/character";
 import Arena from "./components/arena/arena";
 import Store from "./components/store/store";
@@ -85,10 +85,12 @@ class App extends Component {
                     </div>
                 )}
                 { this.props.navigation.showCharacterCreation && <CharacterCreation /> }
-                { this.props.navigation.showCredits && <Credits /> }
+                { this.props.navigation.showChampions && <Champions /> }
                 { this.props.navigation.showCharacter && <Character /> }
                 { this.props.navigation.showArena && <Arena /> }
                 { this.props.navigation.showStore && <Store /> }
+                { this.props.navigation.showCharacterCreation && <p className="credits">Special thanks to <a href="https://delapouite.com">Delapouite</a>, <a href="http://wjbstories.blogspot.com">Wjb </a>
+                    and <a href="http://lorcblog.blogspot.com">Lorc</a> from <a href="https://game-icons.net">Game-Icons</a> for the icons</p>}
             </div>
         );
     }

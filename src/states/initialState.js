@@ -2,7 +2,7 @@ const initialState = {
     navigation: {
         showIntroduction: true,
         showCharacterCreation: false,
-        showCredits: false,
+        showChampions: false,
         showStore: false,
         showArena: false,
         showCharacter: false,
@@ -16,7 +16,8 @@ const initialState = {
         spells: [],
         equipment: [],
         name: "",
-        uid: null
+        uid: null,
+        champion: false
     },
     accountId: null
 }

@@ -1,0 +1,108 @@
+#champions {
+    width: 600px;
+}
+
+#champions .header {
+    margin-bottom: 1em;
+}
+
+#champions .header p {
+    font-size: 14px;
+}
+
+.championList {
+    height: 400px;
+    overflow-y: scroll;
+}
+
+.championList li {
+    list-style-type: none;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+    height: 60px;
+}
+
+.championList li > div {
+    display: flex;
+    flex-direction: row;
+    width: 50%;
+    align-items: center;
+}
+
+.championList li div:nth-of-type(2) {
+    justify-content: space-between;
+    font-size: 14px;
+}
+
+.championList .rank {
+    width: 40px;
+    font-family: "PT Serif";
+    font-size: 20px;
+}
+
+.championList p span {
+    color: #ffb273;
+}
+
+.championList h4 {
+    color: #dfdfdf;
+}
+
+.championList .you {
+    margin-left: 20px;
+    color: #ffb273;
+}
+
+.championList .divider {
+    font-size: 20px;
+}
+
+.championList .rankOne {
+    font-size: 30px;
+    color: rgb(255, 215, 0);
+}
+
+.championList .rankTwo {
+    font-size: 28px;
+    color: rgb(214, 214, 214);
+}
+
+.championList .rankThree {
+    font-size: 26px;
+}
+
+#champions .sorting {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-top: 1px solid rgba(53, 53, 53, 0.75);
+    border-bottom: 1px solid rgba(53, 53, 53, 0.75);
+    padding-left: 10px;
+    margin-bottom: 10px;
+}
+
+#champions .sorting button {
+    outline: 0;
+    border: none;
+    padding: 10px 15px;
+    background: none;
+    font-family: "PT Serif";
+    font-size: 14px;
+    color: #dfdfdf;
+    text-shadow: 1px 1px 2px #000, 0 0 1em #000, 0 0 0.2em #000;
+    transition: all 0.2s linear;
+}
+
+#champions .sorting button:hover {
+    cursor: pointer;
+    color: #ffb273;
+    transition: all 0.2s linear;
+}
+
+#champions .sorting button.active {
+    color: #ffb273;
+}

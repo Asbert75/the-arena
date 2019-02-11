@@ -12,7 +12,7 @@ const classes = [
         spells: [0, 4, 5, 10]
     }, {
         id: 1,
-        name: "Archer",
+        name: "ArcHEr",
         description: "An archer is an agile and fast-paced class, archers have a moderate health pool and damage.",
         icon: "icons/classes/archer.png",
         resourceType: "Mana",

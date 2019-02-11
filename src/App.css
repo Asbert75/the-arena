@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-bottom: 5em;
 }
 
 #app .introduction {
@@ -64,4 +65,18 @@
 
 #app .createBtn:active {
     opacity: 0.6;
+}
+
+#app .credits {
+    margin-top: 4em;
+    font-size: 12px;
+}
+
+#app .credits a {
+    color: #6e29c2;
+    font-size: 13px;
+}
+
+#app .credits a:hover {
+    color: #a153ff;
 }

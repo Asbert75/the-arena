@@ -11,7 +11,8 @@ function saveToLocalStorage(character) {
         level: character.level,
         coins: character.coins,
         experience: character.experience,
-        uid: character.uid
+        uid: character.uid,
+        champion: character.champion
     }
 
     local.spells = character.spells.map(spell => spell.properties);
@@ -32,7 +33,37 @@ function saveToDatabase(character, accountId) {
     saveableCharacter.spells = character.spells.map(spell => spell.properties);
     saveableCharacter.equipment = character.equipment.map(equipment => equipment.properties);
 
-    fetch("/characters/save", {
+    fetch("http://localhost:4000/characters/save", {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: "post",
+        body: JSON.stringify(saveableCharacter)
+    }).then(res => {
+        res.json()
+        .then(res => {
+            console.log(res)
+        })
+        .catch(err => {
+            console.log(err)
+        });
+    })
+    .catch(err => {
+        console.log(err);
+    });
+}
+
+function saveChampion(character, accountId) {
+    let saveableCharacter = {
+        class: character.class.name,
+        level: character.level,
+        name: character.name,
+        uid: character.uid,
+        accountId
+    }
+
+    fetch("http://localhost:4000/champions/save", {
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json"
@@ -62,9 +93,10 @@ let characterReducer = (state={}, action) => {
             newState.spells = action.spells;
             newState.equipment = [];
             newState.name = action.name;
-            newState.level = 1;
-            newState.coins = 0;
-            newState.experience = 0;
+            newState.level = 14;
+            newState.coins = 10000;
+            newState.experience = 8500;
+            newState.champion = false;
             newState.uid = uuid();
 
             saveToLocalStorage(newState);
@@ -122,10 +154,17 @@ let characterReducer = (state={}, action) => {
                 spells: [],
                 equipment: [],
                 name: "",
-                uid: null
+                uid: null,
+                champion: false
             }
 
             removeFromLocalStorage();
+            return newState;
+        case "SET_CHAMPION":
+            newState.champion = true;
+            saveToLocalStorage(newState);
+            saveToDatabase(newState, action.accountId);
+            saveChampion(newState, action.accountId);
             return newState;
         default:
             return state;
@@ -135,7 +174,7 @@ let characterReducer = (state={}, action) => {
 let navigationReducer = (state={}, action) => {
     let newState = {
         showCharacterCreation: false,
-        showCredits: false,
+        showChampions: false,
         showArena: false,
         showCharacter: false,
         showIntroduction: false,
@@ -146,8 +185,8 @@ let navigationReducer = (state={}, action) => {
         case "SHOW_CHARACTER_CREATION":
             newState.showCharacterCreation = true;
             return newState;
-        case "SHOW_CREDITS":
-            newState.showCredits = true;
+        case "SHOW_CHAMPIONS":
+            newState.showChampions = true;
             return newState;
         case "SHOW_ARENA":
             newState.showArena = true;        

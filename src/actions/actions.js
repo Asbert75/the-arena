@@ -4,9 +4,9 @@ let showCharacterCreation = () => {
     }
 }
 
-let showCredits = () => {
+let showChampions = () => {
     return {
-        type: "SHOW_CREDITS"
+        type: "SHOW_CHAMPIONS"
     }
 }
 
@@ -86,9 +86,16 @@ let setAccountId = (accountId = null) => {
     }
 }
 
+let setChampion = (accountId) => {
+    return {
+        type: "SET_CHAMPION",
+        accountId
+    }
+}
+
 export {
     showCharacterCreation,
-    showCredits,
+    showChampions,
     showArena,
     showStore,
     showCharacter,
@@ -98,5 +105,6 @@ export {
     purchaseItem,
     loadCharacter,
     resetCharacter,
-    setAccountId
+    setAccountId,
+    setChampion
 };

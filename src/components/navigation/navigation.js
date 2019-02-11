@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 import "./navigation.css";
 
-import { showCharacterCreation, showCredits, showArena, showStore, showCharacter } from "../../actions/actions";
+import { showCharacterCreation, showChampions, showArena, showStore, showCharacter } from "../../actions/actions";
 
 class Navigation extends Component {
   render() {
@@ -18,13 +18,13 @@ class Navigation extends Component {
             <button onClick={() => this.props.dispatch(showCharacter())} disabled={this.props.characterClass === null}>My Character</button>
           </li>
           <li className={ this.props.navigation.showArena ? "active" : null }>
-            <button onClick={() => this.props.dispatch(showArena())} disabled={this.props.characterClass === null}>Into The Arena</button>
+            <button onClick={() => this.props.dispatch(showArena())} disabled={this.props.characterClass === null}>THE Arena</button>
+          </li>
+          <li className={ this.props.navigation.showChampions ? "active" : null }>
+            <button onClick={() => this.props.dispatch(showChampions())}>Hall of Fame</button>
           </li>
           <li className={ this.props.navigation.showStore ? "active" : null }>
             <button onClick={() => this.props.dispatch(showStore())} disabled={this.props.characterClass === null}>Store</button>
-          </li>
-          <li className={ this.props.navigation.showCredits ? "active" : null }>
-            <button onClick={() => this.props.dispatch(showCredits())}>Credits</button>
           </li>
         </ul>
       </div>

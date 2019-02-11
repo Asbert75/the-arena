@@ -94,7 +94,7 @@ const equipment = [
         healingModifier: 1.25,
         cost: 500,
         requiredLevel: 8,
-        availableClasses: [1, 2, 3]
+        availableClasses: [0, 3]
     }, {
         id: 8,
         name: "Signet of Death",

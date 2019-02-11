@@ -165,7 +165,7 @@
     justify-content: space-between;
 }
 
-#store .spellContainer .description {
+#store .spellContainer .description, #store .spellContainer .secondaryDescription {
     font-size: 13px;
 }
 
